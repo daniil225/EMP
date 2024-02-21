@@ -30,14 +30,14 @@ class Grid_1D
     vector<double> BaseGridX;
     vector<DivideParamS> DivideParam;
     vector<double> Grid;
-
-    void Load(const string &filenmae);
+    int stepCoef = 1; // Коэффициент с шагом для базовой сетки умножается при дроблениях 
 
     public:
 
     Grid_1D() = default;
     Grid_1D(const string &filename);
-    
+    void Load(const string &filenmae);
+
     void GenerateGrid();
     void DivideGrid(const int coef);
     void ReGenerateGrid();
@@ -48,10 +48,16 @@ class Grid_1D
 
     void PrintGrid() const;
 
+    Grid_1D& operator=(const Grid_1D &Grid_)
+    {
+        this->BaseGridX = Grid_.BaseGridX;
+        this->Nx = Grid_.Nx;
+        this->DivideParam = Grid_.DivideParam;
+        this->Grid = Grid_.Grid;
 
-    Grid_1D(const Grid_1D&) = delete;
-    Grid_1D(Grid_1D&&) = delete;
-    Grid_1D& operator=(const Grid_1D&) = delete;
+        return *this;
+    }
+
     ~Grid_1D() = default;
 };
 

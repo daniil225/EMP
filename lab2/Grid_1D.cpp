@@ -126,10 +126,18 @@ void Grid_1D::GenerateGrid()
 
 void Grid_1D::DivideGrid(const int coef)
 {
+    for(uint64_t i = 0; i < DivideParam.size(); i++)
+    {
+        DivideParam[i].num *= static_cast<double>(coef);
+        DivideParam[i].coef = pow(DivideParam[i].coef, 1.0/(static_cast<double>(coef)));
+    }
+    stepCoef *= coef;
 }
 
 void Grid_1D::ReGenerateGrid()
 {
+    Grid.clear(); // Очистка сетки 
+    GenerateGrid(); // Перегенерация сетки 
 }
 
 
