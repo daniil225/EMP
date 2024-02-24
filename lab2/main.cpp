@@ -29,7 +29,7 @@ int main()
     TestSlau();
     vector <function2D> u(14), f(14);
 	u[0] = { [](double x, double t) -> double { return 3 * x + t; } };
-	u[1] = { [](double x, double t) -> double { return 2 * x*x + t; } };
+	u[1] = { [](double x, double t) -> double { return 2 * x*x; } };
 	u[2] = { [](double x, double t) -> double { return x * x*x + t; } };
 	u[3] = { [](double x, double t) -> double { return x * x*x*x + t; } };
 	u[4] = { [](double x, double t) -> double { return exp(x) + t; } };
@@ -55,13 +55,16 @@ int main()
 
     double sigma = 1;
 
-    f[0] = calcRightPart(lambda[0], u[0], sigma);
-
-    //cout << f[0](0.3, 0.5) << "\n";
+    f[0] = calcRightPart(lambda[1], u[1], sigma);
+	//f[0] = [](double x, double t) -> double { return 1-exp(x); };
+	//cout << f[0](0.3, 0.5) << "\n";
 
     FEM fem;
-    fem.init(u[0], f[0], lambda[0], sigma, "Grid.txt", "TimeGrid.txt");
+    fem.init(u[1], f[0], lambda[1], sigma, "Grid.txt", "TimeGrid.txt");
     auto res = fem.solve();
+
+	cout << "UCalc(0.3, 1) = " << fem.CalculateU(0.3, 1.0) << "\n";
+	cout << "|UCalc(0.3, 1) - u(0.3, 1)| = " << abs(fem.CalculateU(0.3, 1.0) - u[1](0.3, 1.0)) << "\n";
     cout << res.first << " " << res.second << "\n";
     return 0;
 }

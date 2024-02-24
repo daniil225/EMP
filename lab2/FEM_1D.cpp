@@ -11,14 +11,15 @@ bool FEM::shouldCalc(int i)
     }
 
 	/* Выход по измененинию вектора решения */
-	if(calcNormE(q-qPrev)/calcNormE(q) < eps)
+	if(calcNormE(q-qPrev)/calcNormE(q) < 1e-4)
 	{
 		return false;
 	}	
 
     // Вывод по невязке
-    if( (calcNormE(MultAOnq(slau.Matr, q) - slau.f))/calcNormE(slau.f) < eps )
-    {
+	//cout << "Non-repan: " << calcNormE(MultAOnq(slau.Matr, q) - slau.f)/calcNormE(slau.f) << "\n";
+    if( calcNormE(MultAOnq(slau.Matr, q) - slau.f)/calcNormE(slau.f) < eps )
+    {	
         return false;
     }
 
@@ -166,6 +167,7 @@ void FEM::init(const function2D &_u, const function2D &_f, const function1D &_la
     /* Память под вектора решений */
     q.resize(n);
     qPrev.resize(n);
+	Q.resize(TimeGrid.size());
 
     /* Память под локальные матрицы  */
     GLocal = vector(2, vector<double>(2));
@@ -173,6 +175,7 @@ void FEM::init(const function2D &_u, const function2D &_f, const function1D &_la
     ALocal = vector(2, vector<double>(2));
 
 }
+
 pair<int, double> FEM::solve() 
 {
 // Задаём начальные условия
@@ -184,7 +187,8 @@ int n = Grid.size();
 		qExact[i] = u(Grid[i], TimeGrid[0]);
 	qPrev = qExact;
 
-	cout << "QTrue: [" << qPrev << "]\n";
+	Q[0] = qPrev;
+	//cout << "QTrue: [" << qPrev << "]\n";
 	int count = 0;
 	// Решаем в каждый момент временной сетки
 	double sumNormQ = 0;
@@ -192,19 +196,46 @@ int n = Grid.size();
 	{
 		dt = TimeGrid[i] - TimeGrid[i - 1];
 		t = TimeGrid[i];
+		bool sC = true;
 		do {
-			qPrev = q;
 			buildGlobalMatrixA(dt);
 			buildGlobalVectorb();
 			SolveSlau(slau, q);
+			count++; // Итеарция прошла
+			qPrev = q; 
+			sC =  shouldCalc(count);
+			cout << "time: " << t << " Norma: " << calcNormAtMainNodes(q) << "\n"; 
 			//cout << "time: " << t << " q = [" << q << "]\n";
-			count++;
-		} while (shouldCalc(count));
+			
+		} while (sC);
+
+		Q[i] = qPrev; // Заносим в решение очередной временной слой
 		sumNormQ += calcNormAtMainNodes(q);
-		cout << "time: " << t << " Norma: " << calcNormAtMainNodes(q) << "\n"; 
 	}
 
 	sumNormQ /= double(TimeGrid.size() -1);
 
 	return make_pair(count, sumNormQ);
+}
+
+double FEM::CalculateU(double x, double t)
+{
+	double res = 0;
+	// Пусть мы берем последний временной слой пока что 
+	vector<double>& TmpQ = Q[Q.size()-1];
+	
+	/* Определим отрезок в котором будем расчитвыать значение функции */
+	int32_t NumElement = 0;
+	for(; NumElement < Grid.size()-1; NumElement++)
+	{
+		if(Grid[NumElement] <= x && Grid[NumElement+1] >= x) break;
+	}
+
+	double xm = Grid[NumElement];
+	double xm1 = Grid[NumElement+1];
+
+	auto Psi1 = [&](double x) { return (xm1 - x)/(xm1-xm); };
+	auto Psi2 = [&](double x) { return (x-xm)/(xm1-xm); };
+
+	return TmpQ[NumElement]*Psi1(x) + TmpQ[NumElement+1]*Psi2(x);
 }

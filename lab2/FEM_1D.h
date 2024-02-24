@@ -31,10 +31,10 @@ class FEM
     double t;
     double dt;
     const int maxiter = 10000; // Максимальное количество итераций 
-    double eps = 1e-10;
+    double eps = 1e-7;
     
-    int StepCoef = 2; // Шаговый коэффициент по пространству 
-    int TimeCoef = 2; // Шаговый коэффициент по времени 
+    int StepCoef = 1; // Шаговый коэффициент по пространству 
+    int TimeCoef = 1; // Шаговый коэффициент по времени 
 
     function2D f, u;
     function1D lambda;
@@ -70,6 +70,8 @@ class FEM
     void init(const function2D &_u, const function2D &_f, const function1D &_lambda, double _sigma, const string &Grid, const string &TimeGrid);
 	pair<int, double> solve();
 	inline int getNodesCount() { return Grid.size(); }
+
+    double CalculateU(double x, double t);
 
 };
 
