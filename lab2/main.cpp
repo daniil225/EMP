@@ -110,17 +110,34 @@ int main()
 	// 	printf("\n\n\n");
 	// }
 
-	FEM fem;
-	f[3] = calcRightPart(lambda[3], u[3], sigma);
-	fem.init(u[3], f[3], lambda[3], sigma, "Grid.txt", "TimeGrid.txt");
-	auto res_Prev = fem.solve();
+	int Lambda_num = 0;
+	/* Делаем проход по всем функциям в списке и фиксированной lambda */
+	for(int k = 0; k < u.size(); k++)
+	{
 
-	printf("lambda(u) = %s  u(x,t) = %s\n", lambda_str[3].c_str(), u_str[3].c_str());
-	printf("|--------------------------------------------------------------------------------------------------|\n");
-	printf("|  N  |  Nodes  |   Iteration   |  || u(x,t)* - u(x,t) ||  |  log(|| * ||(h)/|| * ||(h/2))  |\n");
-	printf("|--------------------------------------------------------------------------------------------------|\n");
-	printf("|%3d  |%6d   |%12d   |%22e    |%30e    |\n", 1, fem.getNodesCount(), res_Prev.first, res_Prev.second, 0); // Первая строка в таблице
+		FEM fem;
+		f[k] = calcRightPart(lambda[Lambda_num], u[k], sigma);
+		fem.init(u[k], f[k], lambda[Lambda_num], sigma, "Grid.txt", "TimeGrid.txt");
+		auto res_Prev = fem.solve();
+		pair<int, double> res_Curr;
+		printf("lambda(u) = %s  u(x,t) = %s\n", lambda_str[Lambda_num].c_str(), u_str[k].c_str());
+		printf("|-------------------------------------------------------------------------------------------|\n");
+		printf("|  N  |  Nodes  |   Iteration   |  || u(x,t)* - u(x,t) ||  |  log(|| * ||(h)/|| * ||(h/2))  |\n");
+		printf("|-------------------------------------------------------------------------------------------|\n");
+		printf("|%2d   |%6d   |%7d        |%18e        |%16s                |\n", 1, fem.getNodesCount(), res_Prev.first, res_Prev.second, "0"); // Первая строка в таблице
+		printf("|-------------------------------------------------------------------------------------------|\n");
 
+		for(int i = 2; i <= 5; i++)
+		{
+			fem.DivideGridAndPrepareInternalParametrs(2);
+			res_Curr = fem.solve();
+			printf("|%2d   |%6d   |%7d        |%18e        |        %13e           |\n", i, fem.getNodesCount(), res_Curr.first, res_Curr.second, log2(res_Prev.second/res_Curr.second) ); // Первая строка в таблице
+			printf("|-------------------------------------------------------------------------------------------|\n");
+			res_Prev = res_Curr;
+		}
+
+		printf("\n\n\n");
+	}
 
     return 0;
 }
