@@ -177,10 +177,46 @@ void FEM::init(const function2D &_u, const function2D &_f, const function1D &_la
 
 }
 
+void FEM::DivideGridAndPrepareInternalParametrs(const int32_t coef)
+{
+	/* Дробим сетку */
+	Grid.DivideGrid(coef);
+	Grid.ReGenerateGrid();
+
+	TimeGrid.DivideGrid(coef);
+	TimeGrid.ReGenerateGrid();
+
+	slau.Matr.di.clear();
+	slau.Matr.al.clear();
+	slau.Matr.au.clear();
+	slau.Matr.ia.clear();
+	slau.f.clear();
+	q.clear();
+	qPrev.clear();
+	qExact.clear();
+	Q.clear();
+
+	 /* Allocate memory for matrix and right part */
+    int n = Grid.size();
+    slau.Matr.di.resize(n);
+    slau.Matr.au.resize(n-1);
+    slau.Matr.al.resize(n-1);
+    slau.Matr.ia.resize(n+1);
+    slau.f.resize(n);
+    /* Генерация профиля матрицы она имеет 3-х диагональную структуру */
+    GenerateProfile();
+
+    /* Память под вектора решений */
+    q.resize(n);
+    qPrev.resize(n);
+	qExact.resize(n);
+	Q.resize(TimeGrid.size());
+}
+
 pair<int, double> FEM::solve() 
 {
-// Задаём начальные условия
-int n = Grid.size();
+	// Задаём начальные условия
+	int n = Grid.size();
 	//q.resize(n, 0);
 	//qPrev.resize(n, 0);
 	

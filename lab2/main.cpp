@@ -2,10 +2,11 @@
 #include <string>
 #include <unistd.h> 
 
+
 function1D calcFirstDerivative(const function1D& f) {
 	return [f](double x) -> double {
 		const double h = 0.00001;
-		return (-f(x + 2 * h) + 8 * f(x + h) - 8 * f(x - h) + f(x - 2 * h)) / (12 * h);
+		return (f(x - 2 * h) - 8 * f(x - h) + 8 * f(x + h) - f(x + 2 * h) ) / (12 * h);
 	};
 }
 
@@ -24,6 +25,34 @@ function2D calcRightPart(const function1D& lambda, const function2D& u, double s
 	};
 }
 
+/* Печатет табличку для исследования на сходимость */
+void PrintTable(vector<string> &param_str, int CountOfDivide, function1D &lambda_, function2D &u_)
+{
+	/* 0 = lambda_str
+	   1 = u_str
+	*/
+	FEM fem;
+	function2D f_ = calcRightPart(lambda_, u_, 1);
+    fem.init(u_, f_, lambda_, 1, "Grid.txt", "TimeGrid.txt");
+
+	pair<int, double> res_Prev = fem.solve();
+	pair<int, double> res_Curr;
+	printf("lambda(u) = %s  u(x,t) = %s", param_str[0].c_str(), param_str[1].c_str());
+	printf("|--------------------------------------------------------------------------------------------------|\n");
+	printf("|  N  |  Nodes  |   Iteration   |  || u(x,t)* - u(x,t) ||  |  log(|| * ||(h)/|| * ||(h/2))  |\n");
+	printf("|--------------------------------------------------------------------------------------------------|\n");
+	printf("|%3d  |%6d   |%12d   |%22e    |%30e    |\n", 1, fem.getNodesCount(), res_Prev.first, 0); // Первая строка в таблице
+
+	for(int i = 2; i <= CountOfDivide; i++)
+	{
+		fem.DivideGridAndPrepareInternalParametrs(2);
+		res_Curr = fem.solve();
+		printf("|%3d  |%6d   |%12d   |%22e    |%30e    |\n", i, fem.getNodesCount(), res_Curr.first, log2(res_Prev.second/res_Curr.second));
+		printf("|--------------------------------------------------------------------------------------------------|\n");
+		res_Prev = res_Curr;
+	}
+	printf("\n\n\n");
+}
 
 int main()
 {
@@ -61,36 +90,37 @@ int main()
 
 	/* Генерация таблички для различных lambda */
 	
-	for(int i = 0; i < lambda.size(); i++)
-	{
-		printf("lambda(u) = %s\n", lambda_str[i].c_str());
-		printf("|-------------------------------------------------------------------------------------------------|\n");
-		printf("|         u(x,t)          |          || u(x,t)* - u(x,t) ||             |        Iteration        |\n");
-		printf("|-------------------------------------------------------------------------------------------------|\n");
-		for(int j = 0; j < u.size(); j++)
-		{
-			f[j] = calcRightPart(lambda[i], u[j], sigma);
-			FEM fem;
-    		fem.init(u[j], f[j], lambda[i], sigma, "Grid.txt", "TimeGrid.txt");
-			auto res = fem.solve();
-			printf("|%s|%.6f||%d|\n", u_str[j].c_str(), res.second, res.first);
-			printf("|-------------------------------------------------------------------------------------------------|\n");
-			sleep(1);
-		}
-		printf("\n\n\n");
-	}
-	
+
+	// for(int i = 0; i < lambda.size(); i++)
+	// {
+	// 	printf("lambda(u) = %s\n", lambda_str[i].c_str());
+	// 	printf("|------------------------------------------------------------------|\n");
+	// 	printf("|         u(x,t)          |  || u(x,t)* - u(x,t) ||  |  Iteration  |\n");
+	// 	printf("|------------------------------------------------------------------|\n");
+	// 	for(int j = 0; j < u.size(); j++)
+	// 	{
+	// 		f[j] = calcRightPart(lambda[i], u[j], sigma);
+	// 		FEM fem;
+    // 		fem.init(u[j], f[j], lambda[i], sigma, "Grid.txt", "TimeGrid.txt");
+	// 		auto res = fem.solve();
+	// 		printf("|%23s  |%20e      |%8d     |\n", u_str[j].c_str(), res.second, res.first);
+	// 		printf("|------------------------------------------------------------------|\n");
+	// 		//sleep(1);
+	// 	}
+	// 	printf("\n\n\n");
+	// }
+
+	FEM fem;
+	f[3] = calcRightPart(lambda[3], u[3], sigma);
+	fem.init(u[3], f[3], lambda[3], sigma, "Grid.txt", "TimeGrid.txt");
+	auto res_Prev = fem.solve();
+
+	printf("lambda(u) = %s  u(x,t) = %s\n", lambda_str[3].c_str(), u_str[3].c_str());
+	printf("|--------------------------------------------------------------------------------------------------|\n");
+	printf("|  N  |  Nodes  |   Iteration   |  || u(x,t)* - u(x,t) ||  |  log(|| * ||(h)/|| * ||(h/2))  |\n");
+	printf("|--------------------------------------------------------------------------------------------------|\n");
+	printf("|%3d  |%6d   |%12d   |%22e    |%30e    |\n", 1, fem.getNodesCount(), res_Prev.first, res_Prev.second, 0); // Первая строка в таблице
 
 
-    f[0] = calcRightPart(lambda[0], u[2], sigma);
-	//f[0] = [](double x, double t) -> double { return 1; };
-
-   FEM fem;
-   fem.init(u[2], f[0], lambda[0], sigma, "Grid.txt", "TimeGrid.txt");
-   auto res = fem.solve();
-
-	//cout << "UCalc(0.3, 1) = " << fem.CalculateU(0.3, 1.0) << "\n";
-	//cout << "|UCalc(0.3, 1) - u(0.3, 1)| = " << abs(fem.CalculateU(0.3, 1.0) - u[1](0.3, 1.0)) << "\n";
-    cout << "Iterations = " <<  res.first << "\n  Norm = " << res.second << "\n";
     return 0;
 }

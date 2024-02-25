@@ -36,7 +36,7 @@ Grid_1D::Grid_1D(const string &filename)
 
     /* Рачет общего числа узлов */
     int32_t GlobalNx = 0;
-    for(int32_t i = 0; i < Nx; i++)
+    for(int32_t i = 0; i < Nx-1; i++)
         GlobalNx+=DivideParam[(uint64_t)i].num;
 
     GlobalNx++;
@@ -137,6 +137,14 @@ void Grid_1D::DivideGrid(const int coef)
 void Grid_1D::ReGenerateGrid()
 {
     Grid.clear(); // Очистка сетки 
+    
+    /* Рачет общего числа узлов */
+    int32_t GlobalNx = 0;
+    for(int32_t i = 0; i < Nx-1; i++)
+        GlobalNx+=DivideParam[(uint64_t)i].num;
+
+    GlobalNx++;
+    Grid.resize((uint64_t)GlobalNx);
     GenerateGrid(); // Перегенерация сетки 
 }
 

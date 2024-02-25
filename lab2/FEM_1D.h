@@ -89,6 +89,7 @@ class FEM
     void init(const function2D &_u, const function2D &_f, const function1D &_lambda, double _sigma, const string &Grid, const string &TimeGrid);
 	pair<int, double> solve();
 	inline int getNodesCount() { return Grid.size(); }
+    void DivideGridAndPrepareInternalParametrs(const int32_t coef);
 
     double CalculateU(double x, double t);
 
