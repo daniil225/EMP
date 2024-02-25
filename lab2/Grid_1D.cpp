@@ -24,7 +24,7 @@ void Grid_1D::Load(const string &filename)
     for(int32_t i = 0; i < Nx-1; i++)
         fin >> DivideParam[(uint64_t)i].num >> DivideParam[(uint64_t)i].coef;
     
-    cout << "File is load done\n";
+    //cout << "File is load done\n";
     fin.close();
 }
 

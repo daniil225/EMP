@@ -23,15 +23,16 @@ class FEM
     Grid_1D TimeGrid;
     Slau slau; // Она же глобальная матрицы и вектор правой части 
     vector<double> q, qPrev;
-
+    vector<double> qExact; // Вектор на прошлой итерации по нелинейности 
     vector<vector<double>> Q; // Общее решение по временным слоям 
 
     double lambda0, lambda1;
     double sigma;
     double t;
     double dt;
-    const int maxiter = 10000; // Максимальное количество итераций 
+    const int maxiter = 1000; // Максимальное количество итераций 
     double eps = 1e-7;
+    double delta = 1e-7;
     
     int StepCoef = 1; // Шаговый коэффициент по пространству 
     int TimeCoef = 1; // Шаговый коэффициент по времени 
@@ -51,12 +52,30 @@ class FEM
 	void buildLocalVectorf(int elemNumber);
     bool shouldCalc(int i);
 
-    double calcNormAtMainNodes(const vector<double> &x)
+    double calcNormAtMainNodes()
     {
-		double tmp = 0;
-		for (size_t i = 0; i < x.size(); i+=StepCoef)
-			tmp += pow((x[i] - u(Grid[i], t)), 2);
-		return sqrt(tmp) / Grid.size();
+        double res = 0;
+		auto normsub = [&](double x, double t)
+        {
+            return pow(u(x,t) - CalculateU(x,t), 2.0);
+        };
+
+        /* Расчет интеграла. Берем шаг h = 0.002 и пройдемся по отрезку и вычислим интеграл */
+        double h = 0.0002;
+        double start = Grid[0];
+        int32_t N = int32_t((Grid[Grid.size()-1] - Grid[0])/h);
+
+        for(int32_t i = 0; i < N; i++)
+        {
+            double a = start + i*h;
+            double b = a + h;
+            double arg = (b+a)/2.0;
+            //cout << "[ " << a << "; " << b << "]\n";
+            //cout << "hx = " << h  << " arg = " << arg << " normsub() = " << normsub(arg, 1.0) << "\n"; 
+            res += h*normsub(arg, 1.0);
+        }
+
+        return sqrt(res);
 	}
 
 

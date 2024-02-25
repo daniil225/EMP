@@ -1,4 +1,6 @@
 #include "FEM_1D.h"
+#include <string>
+#include <unistd.h> 
 
 function1D calcFirstDerivative(const function1D& f) {
 	return [f](double x) -> double {
@@ -26,10 +28,9 @@ function2D calcRightPart(const function1D& lambda, const function2D& u, double s
 int main()
 {
 
-    TestSlau();
     vector <function2D> u(14), f(14);
 	u[0] = { [](double x, double t) -> double { return 3 * x + t; } };
-	u[1] = { [](double x, double t) -> double { return 2 * x*x; } };
+	u[1] = { [](double x, double t) -> double { return 2 * x*x + t; } };
 	u[2] = { [](double x, double t) -> double { return x * x*x + t; } };
 	u[3] = { [](double x, double t) -> double { return x * x*x*x + t; } };
 	u[4] = { [](double x, double t) -> double { return exp(x) + t; } };
@@ -51,20 +52,45 @@ int main()
 	lambda[4] = { [](double u) -> double {return u * u*u; } };
 	lambda[5] = { [](double u) -> double {return u * u*u*u; } };
 	lambda[6] = { [](double u) -> double {return exp(u); } };
-	lambda[7] = { [](double u) -> double {return sin(u); } };
+	lambda[7] = { [](double u) -> double {return 2+sin(u); } };
 
     double sigma = 1;
 
-    f[0] = calcRightPart(lambda[1], u[1], sigma);
-	//f[0] = [](double x, double t) -> double { return 1-exp(x); };
-	//cout << f[0](0.3, 0.5) << "\n";
+	std::vector<std::string> lambda_str = {"1", "u", "u*u", "u*u + 1", "u^3", "u^4", "exp(u)", "2 + sin(u)"};
+	std::vector<std::string> u_str = {"3x + t", "2x^2 + t", "x^3 + t","x^4 + t", "exp(x) + t", "3x + t", "3x + t^2", "3x + t^3", "3x + exp(t)", "3x + sin(t)", "exp(x) + t^2", "exp(x) + t^3", "exp(x) + exp(t)", "exp(t) + sin(t)"};
 
-    FEM fem;
-    fem.init(u[1], f[0], lambda[1], sigma, "Grid.txt", "TimeGrid.txt");
-    auto res = fem.solve();
+	/* Генерация таблички для различных lambda */
+	
+	for(int i = 0; i < lambda.size(); i++)
+	{
+		printf("lambda(u) = %s\n", lambda_str[i].c_str());
+		printf("|-------------------------------------------------------------------------------------------------|\n");
+		printf("|         u(x,t)          |          || u(x,t)* - u(x,t) ||             |        Iteration        |\n");
+		printf("|-------------------------------------------------------------------------------------------------|\n");
+		for(int j = 0; j < u.size(); j++)
+		{
+			f[j] = calcRightPart(lambda[i], u[j], sigma);
+			FEM fem;
+    		fem.init(u[j], f[j], lambda[i], sigma, "Grid.txt", "TimeGrid.txt");
+			auto res = fem.solve();
+			printf("|%s|%.6f||%d|\n", u_str[j].c_str(), res.second, res.first);
+			printf("|-------------------------------------------------------------------------------------------------|\n");
+			sleep(1);
+		}
+		printf("\n\n\n");
+	}
+	
 
-	cout << "UCalc(0.3, 1) = " << fem.CalculateU(0.3, 1.0) << "\n";
-	cout << "|UCalc(0.3, 1) - u(0.3, 1)| = " << abs(fem.CalculateU(0.3, 1.0) - u[1](0.3, 1.0)) << "\n";
-    cout << res.first << " " << res.second << "\n";
+
+    f[0] = calcRightPart(lambda[0], u[2], sigma);
+	//f[0] = [](double x, double t) -> double { return 1; };
+
+   FEM fem;
+   fem.init(u[2], f[0], lambda[0], sigma, "Grid.txt", "TimeGrid.txt");
+   auto res = fem.solve();
+
+	//cout << "UCalc(0.3, 1) = " << fem.CalculateU(0.3, 1.0) << "\n";
+	//cout << "|UCalc(0.3, 1) - u(0.3, 1)| = " << abs(fem.CalculateU(0.3, 1.0) - u[1](0.3, 1.0)) << "\n";
+    cout << "Iterations = " <<  res.first << "\n  Norm = " << res.second << "\n";
     return 0;
 }

@@ -11,7 +11,7 @@ bool FEM::shouldCalc(int i)
     }
 
 	/* Выход по измененинию вектора решения */
-	if(calcNormE(q-qPrev)/calcNormE(q) < 1e-4)
+	if(calcNormE(q-qExact)/calcNormE(q) < delta)
 	{
 		return false;
 	}	
@@ -167,6 +167,7 @@ void FEM::init(const function2D &_u, const function2D &_f, const function1D &_la
     /* Память под вектора решений */
     q.resize(n);
     qPrev.resize(n);
+	qExact.resize(n);
 	Q.resize(TimeGrid.size());
 
     /* Память под локальные матрицы  */
@@ -182,10 +183,11 @@ pair<int, double> FEM::solve()
 int n = Grid.size();
 	//q.resize(n, 0);
 	//qPrev.resize(n, 0);
-	vector<double> qExact(n);
+	
+
 	for (size_t i = 0; i < n; i++)
-		qExact[i] = u(Grid[i], TimeGrid[0]);
-	qPrev = qExact;
+		qPrev[i] = u(Grid[i], TimeGrid[0]);
+	//qPrev = qExact; // Прошлый временной слой его трогать нельзя он прошлый и посчитан идеально 
 
 	Q[0] = qPrev;
 	//cout << "QTrue: [" << qPrev << "]\n";
@@ -194,28 +196,38 @@ int n = Grid.size();
 	double sumNormQ = 0;
 	for (size_t i = 1; i < TimeGrid.size(); i++)
 	{
+		count = 0; // Обнулили счеткик итераций 
+		
 		dt = TimeGrid[i] - TimeGrid[i - 1];
 		t = TimeGrid[i];
-		bool sC = true;
+
+		/* Производим первую итерацию q = q1 - первая итерация по нелинейности на новом временном слое */
+		buildGlobalMatrixA(dt);
+		buildGlobalVectorb();
+		SolveSlau(slau, q);
+		count++; // Итеарция прошла
+		
+		/* Сначала делаем еще одну итерацию по нелинейности и если нет падения погрешности, то заканчиваем итерации */
 		do {
+			qExact = q; // Сохранили векор после итерации по нелинейности это первый вектор посчитанный потом он будет меняться во время итераций по нелинейности  
+			
 			buildGlobalMatrixA(dt);
 			buildGlobalVectorb();
-			SolveSlau(slau, q);
-			count++; // Итеарция прошла
-			qPrev = q; 
-			sC =  shouldCalc(count);
-			cout << "time: " << t << " Norma: " << calcNormAtMainNodes(q) << "\n"; 
-			//cout << "time: " << t << " q = [" << q << "]\n";
+			SolveSlau(slau, q); // Расчитали новый q = q2 и.т.д
 			
-		} while (sC);
-
-		Q[i] = qPrev; // Заносим в решение очередной временной слой
-		sumNormQ += calcNormAtMainNodes(q);
+			count++; // Итеарция прошла
+			
+			//cout << "time: " << t << " q = [" << q << "]\n";
+			//cout << "time: " << t << " qPrev = [" << qPrev << "]\n";
+		
+		} while (shouldCalc(count));
+		
+		qPrev = qExact; //  Новый временной слой присвоили 
+		//cout << "Time = " << t <<" Total iteration = " << count << "\n";
+		Q[i] = q; // Заносим в решение очередной временной слой
 	}
 
-	sumNormQ /= double(TimeGrid.size() -1);
-
-	return make_pair(count, sumNormQ);
+	return make_pair(count, calcNormAtMainNodes()); // в конце возвращаем количество итераций по нелинейности для последнего временного слоя и погрешность то же для последнего 
 }
 
 double FEM::CalculateU(double x, double t)
