@@ -8,9 +8,9 @@
 # Исследование
 
 ## Метод простой итерации
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |    119        |      9.155494e-08        |               0                |
 | 2   |    21   |    208        |      3.715434e-08        |         1.301107e+00           |
@@ -20,9 +20,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 2x^2 + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 2x^2 + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |    103        |      3.890227e-03        |               0                |
 | 2   |    21   |    183        |      9.798925e-04        |         1.989159e+00           |
@@ -32,9 +32,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 2x^2 + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = x^3 + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = x^3 + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     71        |      3.912039e-03        |               0                |
 | 2   |    21   |    141        |      9.741860e-04        |         2.005651e+00           |
@@ -44,9 +44,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = x^3 + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = x^4 + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = x^4 + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     80        |      1.214100e-02        |               0                |
 | 2   |    21   |    141        |      2.986090e-03        |         2.023558e+00           |
@@ -56,9 +56,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = x^4 + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^x + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     79        |      1.066488e-03        |               0                |
 | 2   |    21   |    143        |      2.669859e-04        |         1.998032e+00           |
@@ -68,9 +68,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |    119        |      9.155494e-08        |               0                |
 | 2   |    21   |    208        |      3.715434e-08        |         1.301107e+00           |
@@ -80,9 +80,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t^2$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + t^2$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |    121        |      1.538674e-03        |               0                |
 | 2   |    21   |    204        |      7.837862e-04        |         9.731552e-01           |
@@ -92,9 +92,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t^2$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t^3$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + t^3$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |    119        |      4.411252e-03        |               0                |
 | 2   |    21   |    203        |      2.294004e-03        |         9.433204e-01           |
@@ -104,9 +104,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t^3$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + e^t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + e^t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     97        |      6.858606e-04        |               0                |
 | 2   |    21   |    177        |      3.524306e-04        |         9.605760e-01           |
@@ -116,9 +116,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + e^t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + sin(t)$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + sin(t)$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |    118        |      6.966347e-04        |               0                |
 | 2   |    21   |    207        |      3.596696e-04        |         9.537299e-01           |
@@ -128,9 +128,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + sin(t)$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t^2$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^x + t^2$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     82        |      1.316144e-03        |               0                |
 | 2   |    21   |    142        |      5.685822e-04        |         1.210876e+00           |
@@ -140,9 +140,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t^2$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t^3$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^x + t^3$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     81        |      3.215417e-03        |               0                |
 | 2   |    21   |    138        |      1.677325e-03        |         9.388430e-01           |
@@ -152,9 +152,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t^3$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + e^t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^x + e^t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     70        |      1.340520e-03        |               0                |
 | 2   |    21   |    127        |      4.524199e-04        |         1.567058e+00           |
@@ -164,9 +164,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + e^t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^t + sin(t)$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^t + sin(t)$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     79        |      1.393894e-03        |               0                |
 | 2   |    21   |    141        |      4.560330e-04        |         1.611911e+00           |
@@ -174,11 +174,11 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^t + sin(t)$
 | 4   |    81   |    403        |      7.696543e-05        |         1.190023e+00           |
 | 5   |   161   |    643        |      3.599562e-05        |         1.096389e+00           |
 
-# Метод Ньютона 
+## Метод Ньютона
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     16        |      1.174797e-08        |               0                |
 | 2   |    21   |     25        |      1.939046e-08        |        -7.229351e-01           |
@@ -188,9 +188,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 2x^2 + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 2x^2 + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     32        |      3.890265e-03        |               0                |
 | 2   |    21   |     43        |      9.799256e-04        |         1.989124e+00           |
@@ -200,9 +200,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 2x^2 + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = x^3 + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = x^3 + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     31        |      3.912003e-03        |               0                |
 | 2   |    21   |     42        |      9.741506e-04        |         2.005691e+00           |
@@ -212,9 +212,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = x^3 + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = x^4 + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = x^4 + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     31        |      1.214099e-02        |               0                |
 | 2   |    21   |     42        |      2.986059e-03        |         2.023572e+00           |
@@ -224,9 +224,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = x^4 + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^x + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     24        |      1.066484e-03        |               0                |
 | 2   |    21   |     43        |      2.669836e-04        |         1.998040e+00           |
@@ -236,9 +236,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     16        |      1.174797e-08        |               0                |
 | 2   |    21   |     25        |      1.939046e-08        |        -7.229351e-01           |
@@ -248,9 +248,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t^2$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + t^2$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     24        |      1.538635e-03        |               0                |
 | 2   |    21   |     44        |      7.838912e-04        |         9.729261e-01           |
@@ -260,9 +260,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t^2$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t^3$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + t^3$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     24        |      4.411195e-03        |               0                |
 | 2   |    21   |     43        |      2.294089e-03        |         9.432482e-01           |
@@ -272,9 +272,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + t^3$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + e^t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + e^t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     26        |      6.858642e-04        |               0                |
 | 2   |    21   |     28        |      3.523188e-04        |         9.610413e-01           |
@@ -284,9 +284,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + e^t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + sin(t)$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = 3x + sin(t)$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     25        |      6.965193e-04        |               0                |
 | 2   |    21   |     40        |      3.596517e-04        |         9.535628e-01           |
@@ -296,9 +296,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = 3x + sin(t)$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t^2$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^x + t^2$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     24        |      1.316134e-03        |               0                |
 | 2   |    21   |     43        |      5.685916e-04        |         1.210841e+00           |
@@ -308,9 +308,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t^2$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t^3$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^x + t^3$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     26        |      3.215404e-03        |               0                |
 | 2   |    21   |     40        |      1.677347e-03        |         9.388190e-01           |
@@ -320,9 +320,9 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + t^3$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + e^t$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^x + e^t$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     25        |      1.340536e-03        |               0                |
 | 2   |    21   |     44        |      4.524343e-04        |         1.567030e+00           |
@@ -332,13 +332,12 @@ $\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^x + e^t$
 
 
 
-$\lambda(u) = u^u + 1 \space\space\space  u(x,t) = e^t + sin(t)$
+$\lambda(u) = u^2 + 1 \space\space\space  u(x,t) = e^t + sin(t)$
 
-|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_{L_2}$|  $\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$|
+|  N  |  Nodes  |   Iteration   |$\|u(x,t)^*-u(x,t)\|_ {L_2}$|$\log(\frac{ \| u(x,t)^* - u(x,t)_ {h} \|_ {L_2} }{\| u(x,t)^* - u(x,t)_ {\frac{h}{2}} \|_ {L_ 2}})$|
 |-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|
 | 1   |    11   |     24        |      1.393889e-03        |               0                |
 | 2   |    21   |     43        |      4.559543e-04        |         1.612154e+00           |
 | 3   |    41   |     83        |      1.755613e-04        |         1.376914e+00           |
 | 4   |    81   |    156        |      7.752160e-05        |         1.179305e+00           |
 | 5   |   161   |    163        |      3.641089e-05        |         1.090229e+00           |
-
