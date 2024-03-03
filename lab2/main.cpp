@@ -112,30 +112,66 @@ int main()
 
 	int Lambda_num = 3;
 	/* Делаем проход по всем функциям в списке и фиксированной lambda */
-	for(int k = 0; k < u.size(); k++)
+	// for(int k = 0; k < u.size(); k++)
+	// {
+
+	// 	FEM fem;
+	// 	f[k] = calcRightPart(lambda[Lambda_num], u[k], sigma);
+	// 	fem.init(u[k], f[k], lambda[Lambda_num], sigma, "Grid.txt", "TimeGrid.txt");
+	// 	auto res_Prev = fem.NutonSolve(); //  Решение уравнения по методу Ньютона 
+	// 	pair<int, double> res_Curr;
+	// 	printf("$\\lambda(u) = %s \\space\\space\\space  u(x,t) = %s$\n", lambda_str[Lambda_num].c_str(), u_str[k].c_str());
+	// 	printf("\n");
+	// 	//printf("|-------------------------------------------------------------------------------------------|\n");
+	// 	printf("|  N  |  Nodes  |   Iteration   |$\\|u(x,t)^*-u(x,t)\\|_ {L_2}$|$\\log(\\frac{ \\| u(x,t)^* - u(x,t)_ {h} \\|_ {L_2} }{\\| u(x,t)^* - u(x,t)_ {\\frac{h}{2}} \\|_ {L_ 2}})$|\n");
+	// 	printf("|-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|\n");
+	// 	printf("|%2d   |%6d   |%7d        |%18e        |%16s                |\n", 1, fem.getNodesCount(), res_Prev.first, res_Prev.second, "0"); // Первая строка в таблице
+	// 	//printf("\n");
+	// 	//printf("|-------------------------------------------------------------------------------------------|\n");
+
+	// 	for(int i = 2; i <= 5; i++)
+	// 	{
+	// 		fem.DivideGridAndPrepareInternalParametrs(2);
+	// 		res_Curr = fem.NutonSolve();
+	// 		printf("|%2d   |%6d   |%7d        |%18e        |        %13e           |\n", i, fem.getNodesCount(), res_Curr.first, res_Curr.second, log2(res_Prev.second/res_Curr.second) ); // Первая строка в таблице
+	// 		//printf("|-------------------------------------------------------------------------------------------|\n");
+	// 		res_Prev = res_Curr;
+	// 	}
+
+	// 	printf("\n\n\n");
+	// }
+
+		for(int k = 0; k < u.size(); k++)
 	{
 
 		FEM fem;
 		f[k] = calcRightPart(lambda[Lambda_num], u[k], sigma);
 		fem.init(u[k], f[k], lambda[Lambda_num], sigma, "Grid.txt", "TimeGrid.txt");
-		auto res_Prev = fem.NutonSolve(); //  Решение уравнения по методу Ньютона 
-		pair<int, double> res_Curr;
+		auto res_Prev_NI = fem.NutonSolve(); //  Решение уравнения по методу Ньютона 
+		auto res_Prev_SI = fem.solve();
+		pair<int, double> res_Curr_SI;
+		pair<int, double> res_Curr_NI;
 		printf("$\\lambda(u) = %s \\space\\space\\space  u(x,t) = %s$\n", lambda_str[Lambda_num].c_str(), u_str[k].c_str());
 		printf("\n");
+		double r = (double)res_Prev_SI.first/(double)res_Prev_NI.first;
 		//printf("|-------------------------------------------------------------------------------------------|\n");
-		printf("|  N  |  Nodes  |   Iteration   |$\\|u(x,t)^*-u(x,t)\\|_ {L_2}$|$\\log(\\frac{ \\| u(x,t)^* - u(x,t)_ {h} \\|_ {L_2} }{\\| u(x,t)^* - u(x,t)_ {\\frac{h}{2}} \\|_ {L_ 2}})$|\n");
-		printf("|-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|\n");
-		printf("|%2d   |%6d   |%7d        |%18e        |%16s                |\n", 1, fem.getNodesCount(), res_Prev.first, res_Prev.second, "0"); // Первая строка в таблице
+		printf("|  N  |  Nodes  | Iteration SI | Iteration NI | SI - NI | Ускорение |\n");
+		printf("|-----|:-------:|:------------:|:------------:|:-------:|:---------:|\n");
+		printf("|%5d|%9d|%14d|%14d|%9d|%11.3lf|\n", 1, fem.getNodesCount(), res_Prev_SI.first, res_Prev_NI.first,
+		res_Prev_SI.first - res_Prev_NI.first , r); // Первая строка в таблице
 		//printf("\n");
 		//printf("|-------------------------------------------------------------------------------------------|\n");
 
 		for(int i = 2; i <= 5; i++)
 		{
 			fem.DivideGridAndPrepareInternalParametrs(2);
-			res_Curr = fem.NutonSolve();
-			printf("|%2d   |%6d   |%7d        |%18e        |        %13e           |\n", i, fem.getNodesCount(), res_Curr.first, res_Curr.second, log2(res_Prev.second/res_Curr.second) ); // Первая строка в таблице
+			res_Prev_NI = fem.NutonSolve();
+			res_Prev_SI = fem.solve();
+			r = (double)res_Prev_SI.first/(double)res_Prev_NI.first;
+			printf("|%5d|%9d|%14d|%14d|%9d|%11.3lf|\n", i, fem.getNodesCount(), res_Prev_SI.first, res_Prev_NI.first,
+		res_Prev_SI.first - res_Prev_NI.first , r); // Первая строка в таблице
 			//printf("|-------------------------------------------------------------------------------------------|\n");
-			res_Prev = res_Curr;
+			
 		}
 
 		printf("\n\n\n");
