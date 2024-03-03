@@ -1,0 +1,1573 @@
+<h1 id="теоретическая-часть">Теоретическая часть</h1>
+<p>Анализ и формулы для основной части были представленны в основной части работы. Здесь представлю лишь формулы для сборки матрицы и вектора правой части линеаризованной по методу Ньютона</p>
+<h1 id="исследование">Исследование</h1>
+<h2 id="метод-простой-итерации">Метод простой итерации</h2>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">119</td>
+<td style="text-align: center;">9.155494e-08</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">208</td>
+<td style="text-align: center;">3.715434e-08</td>
+<td style="text-align: center;">1.301107e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">353</td>
+<td style="text-align: center;">1.635214e-07</td>
+<td style="text-align: center;">-2.137877e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">564</td>
+<td style="text-align: center;">5.153245e-08</td>
+<td style="text-align: center;">1.665926e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">804</td>
+<td style="text-align: center;">2.625490e-07</td>
+<td style="text-align: center;">-2.349034e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 2x^2 + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">103</td>
+<td style="text-align: center;">3.890227e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">183</td>
+<td style="text-align: center;">9.798925e-04</td>
+<td style="text-align: center;">1.989159e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">323</td>
+<td style="text-align: center;">2.454316e-04</td>
+<td style="text-align: center;">1.997303e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">547</td>
+<td style="text-align: center;">6.154468e-05</td>
+<td style="text-align: center;">1.995615e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">803</td>
+<td style="text-align: center;">1.507836e-05</td>
+<td style="text-align: center;">2.029155e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = x^3 + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">71</td>
+<td style="text-align: center;">3.912039e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">141</td>
+<td style="text-align: center;">9.741860e-04</td>
+<td style="text-align: center;">2.005651e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">241</td>
+<td style="text-align: center;">2.433090e-04</td>
+<td style="text-align: center;">2.001408e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">402</td>
+<td style="text-align: center;">6.065667e-05</td>
+<td style="text-align: center;">2.004051e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">742</td>
+<td style="text-align: center;">1.486094e-05</td>
+<td style="text-align: center;">2.029141e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = x^4 + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;">1.214100e-02</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">141</td>
+<td style="text-align: center;">2.986090e-03</td>
+<td style="text-align: center;">2.023558e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">242</td>
+<td style="text-align: center;">7.433376e-04</td>
+<td style="text-align: center;">2.006168e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">481</td>
+<td style="text-align: center;">1.856697e-04</td>
+<td style="text-align: center;">2.001280e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">802</td>
+<td style="text-align: center;">4.631607e-05</td>
+<td style="text-align: center;">2.003153e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^x + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">79</td>
+<td style="text-align: center;">1.066488e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">143</td>
+<td style="text-align: center;">2.669859e-04</td>
+<td style="text-align: center;">1.998032e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">243</td>
+<td style="text-align: center;">6.679561e-05</td>
+<td style="text-align: center;">1.998938e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">403</td>
+<td style="text-align: center;">1.669873e-05</td>
+<td style="text-align: center;">2.000015e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">643</td>
+<td style="text-align: center;">4.054345e-06</td>
+<td style="text-align: center;">2.042198e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">119</td>
+<td style="text-align: center;">9.155494e-08</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">208</td>
+<td style="text-align: center;">3.715434e-08</td>
+<td style="text-align: center;">1.301107e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">353</td>
+<td style="text-align: center;">1.635214e-07</td>
+<td style="text-align: center;">-2.137877e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">564</td>
+<td style="text-align: center;">5.153245e-08</td>
+<td style="text-align: center;">1.665926e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">804</td>
+<td style="text-align: center;">2.625490e-07</td>
+<td style="text-align: center;">-2.349034e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + t^2$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">121</td>
+<td style="text-align: center;">1.538674e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">204</td>
+<td style="text-align: center;">7.837862e-04</td>
+<td style="text-align: center;">9.731552e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">347</td>
+<td style="text-align: center;">3.937348e-04</td>
+<td style="text-align: center;">9.932359e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">539</td>
+<td style="text-align: center;">1.971766e-04</td>
+<td style="text-align: center;">9.977355e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">818</td>
+<td style="text-align: center;">9.845802e-05</td>
+<td style="text-align: center;">1.001908e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + t^3$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">119</td>
+<td style="text-align: center;">4.411252e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">203</td>
+<td style="text-align: center;">2.294004e-03</td>
+<td style="text-align: center;">9.433204e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">330</td>
+<td style="text-align: center;">1.164032e-03</td>
+<td style="text-align: center;">9.787372e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">508</td>
+<td style="text-align: center;">5.857115e-04</td>
+<td style="text-align: center;">9.908684e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">782</td>
+<td style="text-align: center;">2.934329e-04</td>
+<td style="text-align: center;">9.971598e-01</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + e^t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;">6.858606e-04</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">177</td>
+<td style="text-align: center;">3.524306e-04</td>
+<td style="text-align: center;">9.605760e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">307</td>
+<td style="text-align: center;">1.781518e-04</td>
+<td style="text-align: center;">9.842320e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">539</td>
+<td style="text-align: center;">8.943058e-05</td>
+<td style="text-align: center;">9.942671e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">804</td>
+<td style="text-align: center;">4.462511e-05</td>
+<td style="text-align: center;">1.002913e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + sin(t)$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">118</td>
+<td style="text-align: center;">6.966347e-04</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">207</td>
+<td style="text-align: center;">3.596696e-04</td>
+<td style="text-align: center;">9.537299e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">346</td>
+<td style="text-align: center;">1.816208e-04</td>
+<td style="text-align: center;">9.857426e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">557</td>
+<td style="text-align: center;">9.154871e-05</td>
+<td style="text-align: center;">9.883183e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">804</td>
+<td style="text-align: center;">4.584023e-05</td>
+<td style="text-align: center;">9.979254e-01</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^x + t^2$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">82</td>
+<td style="text-align: center;">1.316144e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">142</td>
+<td style="text-align: center;">5.685822e-04</td>
+<td style="text-align: center;">1.210876e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">241</td>
+<td style="text-align: center;">2.838319e-04</td>
+<td style="text-align: center;">1.002332e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">399</td>
+<td style="text-align: center;">1.447834e-04</td>
+<td style="text-align: center;">9.711405e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">702</td>
+<td style="text-align: center;">7.345375e-05</td>
+<td style="text-align: center;">9.789881e-01</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^x + t^3$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">3.215417e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">138</td>
+<td style="text-align: center;">1.677325e-03</td>
+<td style="text-align: center;">9.388430e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">243</td>
+<td style="text-align: center;">8.634555e-04</td>
+<td style="text-align: center;">9.579689e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">404</td>
+<td style="text-align: center;">4.386762e-04</td>
+<td style="text-align: center;">9.769653e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">665</td>
+<td style="text-align: center;">2.212058e-04</td>
+<td style="text-align: center;">9.877677e-01</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^x + e^t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">1.340520e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">127</td>
+<td style="text-align: center;">4.524199e-04</td>
+<td style="text-align: center;">1.567058e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">230</td>
+<td style="text-align: center;">1.830342e-04</td>
+<td style="text-align: center;">1.305549e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">403</td>
+<td style="text-align: center;">8.350207e-05</td>
+<td style="text-align: center;">1.132229e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">643</td>
+<td style="text-align: center;">4.048926e-05</td>
+<td style="text-align: center;">1.044273e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^t + sin(t)$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">79</td>
+<td style="text-align: center;">1.393894e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">141</td>
+<td style="text-align: center;">4.560330e-04</td>
+<td style="text-align: center;">1.611911e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">243</td>
+<td style="text-align: center;">1.756016e-04</td>
+<td style="text-align: center;">1.376832e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">403</td>
+<td style="text-align: center;">7.696543e-05</td>
+<td style="text-align: center;">1.190023e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">643</td>
+<td style="text-align: center;">3.599562e-05</td>
+<td style="text-align: center;">1.096389e+00</td>
+</tr>
+</tbody>
+</table>
+<h1 id="метод-ньютона">Метод Ньютона</h1>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">1.174797e-08</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">1.939046e-08</td>
+<td style="text-align: center;">-7.229351e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;">3.751197e-09</td>
+<td style="text-align: center;">2.369924e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">1.155411e-09</td>
+<td style="text-align: center;">1.698945e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">1.148152e-09</td>
+<td style="text-align: center;">9.092376e-03</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 2x^2 + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">32</td>
+<td style="text-align: center;">3.890265e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">43</td>
+<td style="text-align: center;">9.799256e-04</td>
+<td style="text-align: center;">1.989124e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">2.454131e-04</td>
+<td style="text-align: center;">1.997460e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">162</td>
+<td style="text-align: center;">6.137994e-05</td>
+<td style="text-align: center;">1.999373e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">267</td>
+<td style="text-align: center;">1.889803e-05</td>
+<td style="text-align: center;">1.699531e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = x^3 + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">31</td>
+<td style="text-align: center;">3.912003e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">42</td>
+<td style="text-align: center;">9.741506e-04</td>
+<td style="text-align: center;">2.005691e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">82</td>
+<td style="text-align: center;">2.433092e-04</td>
+<td style="text-align: center;">2.001354e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">162</td>
+<td style="text-align: center;">6.082387e-05</td>
+<td style="text-align: center;">2.000081e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">264</td>
+<td style="text-align: center;">1.892459e-05</td>
+<td style="text-align: center;">1.684376e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = x^4 + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">31</td>
+<td style="text-align: center;">1.214099e-02</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">42</td>
+<td style="text-align: center;">2.986059e-03</td>
+<td style="text-align: center;">2.023572e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">82</td>
+<td style="text-align: center;">7.434259e-04</td>
+<td style="text-align: center;">2.005982e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">162</td>
+<td style="text-align: center;">1.856790e-04</td>
+<td style="text-align: center;">2.001378e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">322</td>
+<td style="text-align: center;">4.640915e-05</td>
+<td style="text-align: center;">2.000330e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^x + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">1.066484e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">43</td>
+<td style="text-align: center;">2.669836e-04</td>
+<td style="text-align: center;">1.998040e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">6.677314e-05</td>
+<td style="text-align: center;">1.999411e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">162</td>
+<td style="text-align: center;">1.670122e-05</td>
+<td style="text-align: center;">1.999314e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">4.377704e-06</td>
+<td style="text-align: center;">1.931707e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">1.174797e-08</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">1.939046e-08</td>
+<td style="text-align: center;">-7.229351e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;">3.751197e-09</td>
+<td style="text-align: center;">2.369924e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">1.155411e-09</td>
+<td style="text-align: center;">1.698945e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">1.148152e-09</td>
+<td style="text-align: center;">9.092376e-03</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + t^2$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">1.538635e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;">7.838912e-04</td>
+<td style="text-align: center;">9.729261e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">51</td>
+<td style="text-align: center;">3.937405e-04</td>
+<td style="text-align: center;">9.934081e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">1.970618e-04</td>
+<td style="text-align: center;">9.985968e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">9.856593e-05</td>
+<td style="text-align: center;">9.994875e-01</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + t^3$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">4.411195e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">43</td>
+<td style="text-align: center;">2.294089e-03</td>
+<td style="text-align: center;">9.432482e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">1.164039e-03</td>
+<td style="text-align: center;">9.787823e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">5.855382e-04</td>
+<td style="text-align: center;">9.913037e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">2.935896e-04</td>
+<td style="text-align: center;">9.959625e-01</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + e^t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">26</td>
+<td style="text-align: center;">6.858642e-04</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">28</td>
+<td style="text-align: center;">3.523188e-04</td>
+<td style="text-align: center;">9.610413e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">45</td>
+<td style="text-align: center;">1.780884e-04</td>
+<td style="text-align: center;">9.842884e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">84</td>
+<td style="text-align: center;">8.948248e-05</td>
+<td style="text-align: center;">9.929160e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">4.485540e-05</td>
+<td style="text-align: center;">9.963234e-01</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = 3x + sin(t)$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">6.965193e-04</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">3.596517e-04</td>
+<td style="text-align: center;">9.535628e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;">1.817500e-04</td>
+<td style="text-align: center;">9.846449e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">9.126313e-05</td>
+<td style="text-align: center;">9.938517e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">4.570490e-05</td>
+<td style="text-align: center;">9.976834e-01</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^x + t^2$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">1.316134e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">43</td>
+<td style="text-align: center;">5.685916e-04</td>
+<td style="text-align: center;">1.210841e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">2.839424e-04</td>
+<td style="text-align: center;">1.001795e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">142</td>
+<td style="text-align: center;">1.447898e-04</td>
+<td style="text-align: center;">9.716380e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">7.143677e-05</td>
+<td style="text-align: center;">1.019221e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^x + t^3$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">26</td>
+<td style="text-align: center;">3.215404e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">1.677347e-03</td>
+<td style="text-align: center;">9.388190e-01</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">75</td>
+<td style="text-align: center;">8.634902e-04</td>
+<td style="text-align: center;">9.579291e-01</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">129</td>
+<td style="text-align: center;">4.387277e-04</td>
+<td style="text-align: center;">9.768541e-01</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">192</td>
+<td style="text-align: center;">2.212002e-04</td>
+<td style="text-align: center;">9.879729e-01</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^x + e^t$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">1.340536e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;">4.524343e-04</td>
+<td style="text-align: center;">1.567030e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">1.830826e-04</td>
+<td style="text-align: center;">1.305214e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">162</td>
+<td style="text-align: center;">8.352043e-05</td>
+<td style="text-align: center;">1.132293e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">3.925923e-05</td>
+<td style="text-align: center;">1.089097e+00</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">$\lambda(u) = u^u + 1 \space\space\space u(x,t) = e^t + sin(t)$</span></p>
+<table>
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 10%" />
+<col style="width: 17%" />
+<col style="width: 35%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th style="text-align: center;">Nodes</th>
+<th style="text-align: center;">Iteration</th>
+<th style="text-align: center;"><span class="math inline">∥<em>u</em>(<em>x</em>, <em>t</em>)<sup>*</sup> − <em>u</em>(<em>x</em>, <em>t</em>)∥<sub><em>L</em><sub>2</sub></sub></span></th>
+<th style="text-align: center;"><span class="math inline">$\log(\frac{\| u(x,t)^*-u(x,t)_h \|_{L_2}}{\| u(x,t)^*-u(x,t)_{\frac{h}{2}} \|_{L_2}})$</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: center;">11</td>
+<td style="text-align: center;">24</td>
+<td style="text-align: center;">1.393889e-03</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">43</td>
+<td style="text-align: center;">4.559543e-04</td>
+<td style="text-align: center;">1.612154e+00</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;">1.755613e-04</td>
+<td style="text-align: center;">1.376914e+00</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">156</td>
+<td style="text-align: center;">7.752160e-05</td>
+<td style="text-align: center;">1.179305e+00</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: center;">161</td>
+<td style="text-align: center;">163</td>
+<td style="text-align: center;">3.641089e-05</td>
+<td style="text-align: center;">1.090229e+00</td>
+</tr>
+</tbody>
+</table>

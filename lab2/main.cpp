@@ -81,12 +81,12 @@ int main()
 	lambda[4] = { [](double u) -> double {return u * u*u; } };
 	lambda[5] = { [](double u) -> double {return u * u*u*u; } };
 	lambda[6] = { [](double u) -> double {return exp(u); } };
-	lambda[7] = { [](double u) -> double {return 2+sin(u); } };
+	lambda[7] = { [](double u) -> double {return 2*u+sin(15*u); } };
 
     double sigma = 1;
 
-	std::vector<std::string> lambda_str = {"1", "u", "u*u", "u*u + 1", "u^3", "u^4", "exp(u)", "2 + sin(u)"};
-	std::vector<std::string> u_str = {"3x + t", "2x^2 + t", "x^3 + t","x^4 + t", "exp(x) + t", "3x + t", "3x + t^2", "3x + t^3", "3x + exp(t)", "3x + sin(t)", "exp(x) + t^2", "exp(x) + t^3", "exp(x) + exp(t)", "exp(t) + sin(t)"};
+	std::vector<std::string> lambda_str = {"1", "u", "u^u", "u^u + 1", "u^3", "u^4", "e^u", "2u + sin(15u)"};
+	std::vector<std::string> u_str = {"3x + t", "2x^2 + t", "x^3 + t","x^4 + t", "e^x + t", "3x + t", "3x + t^2", "3x + t^3", "3x + e^t", "3x + sin(t)", "e^x + t^2", "e^x + t^3", "e^x + e^t", "e^t + sin(t)"};
 
 	/* Генерация таблички для различных lambda */
 	
@@ -110,7 +110,7 @@ int main()
 	// 	printf("\n\n\n");
 	// }
 
-	int Lambda_num = 0;
+	int Lambda_num = 3;
 	/* Делаем проход по всем функциям в списке и фиксированной lambda */
 	for(int k = 0; k < u.size(); k++)
 	{
@@ -118,21 +118,23 @@ int main()
 		FEM fem;
 		f[k] = calcRightPart(lambda[Lambda_num], u[k], sigma);
 		fem.init(u[k], f[k], lambda[Lambda_num], sigma, "Grid.txt", "TimeGrid.txt");
-		auto res_Prev = fem.solve();
+		auto res_Prev = fem.solve(); //  Решение уравнения по методу Ньютона 
 		pair<int, double> res_Curr;
-		printf("lambda(u) = %s  u(x,t) = %s\n", lambda_str[Lambda_num].c_str(), u_str[k].c_str());
-		printf("|-------------------------------------------------------------------------------------------|\n");
-		printf("|  N  |  Nodes  |   Iteration   |  || u(x,t)* - u(x,t) ||  |  log(|| * ||(h)/|| * ||(h/2))  |\n");
-		printf("|-------------------------------------------------------------------------------------------|\n");
+		printf("$\\lambda(u) = %s \\space\\space\\space  u(x,t) = %s$\n", lambda_str[Lambda_num].c_str(), u_str[k].c_str());
+		printf("\n");
+		//printf("|-------------------------------------------------------------------------------------------|\n");
+		printf("|  N  |  Nodes  |   Iteration   |$\\|u(x,t)^*-u(x,t)\\|_{L_2}$|  $\\log(\\frac{\\| u(x,t)^*-u(x,t)_h \\|_{L_2}}{\\| u(x,t)^*-u(x,t)_{\\frac{h}{2}} \\|_{L_2}})$|\n");
+		printf("|-----|:-------:|:-------------:|:-----------------------------:|:-------------------------:|\n");
 		printf("|%2d   |%6d   |%7d        |%18e        |%16s                |\n", 1, fem.getNodesCount(), res_Prev.first, res_Prev.second, "0"); // Первая строка в таблице
-		printf("|-------------------------------------------------------------------------------------------|\n");
+		//printf("\n");
+		//printf("|-------------------------------------------------------------------------------------------|\n");
 
 		for(int i = 2; i <= 5; i++)
 		{
 			fem.DivideGridAndPrepareInternalParametrs(2);
 			res_Curr = fem.solve();
 			printf("|%2d   |%6d   |%7d        |%18e        |        %13e           |\n", i, fem.getNodesCount(), res_Curr.first, res_Curr.second, log2(res_Prev.second/res_Curr.second) ); // Первая строка в таблице
-			printf("|-------------------------------------------------------------------------------------------|\n");
+			//printf("|-------------------------------------------------------------------------------------------|\n");
 			res_Prev = res_Curr;
 		}
 
