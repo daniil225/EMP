@@ -110,7 +110,7 @@ int main()
 	// 	printf("\n\n\n");
 	// }
 
-	int Lambda_num = 3;
+	int Lambda_num = 1;
 	/* Делаем проход по всем функциям в списке и фиксированной lambda */
 	// for(int k = 0; k < u.size(); k++)
 	// {

@@ -387,7 +387,7 @@ pair<int, double> FEM::solve()
 		Q[i] = q; // Заносим в решение очередной временной слой
 	}
 
-	return make_pair(allCount, calcNormAtMainNodes()); // в конце возвращаем количество итераций по нелинейности для последнего временного слоя и погрешность то же для последнего 
+	return make_pair(count, calcNormAtMainNodes()); // в конце возвращаем количество итераций по нелинейности для последнего временного слоя и погрешность то же для последнего 
 }
 
 pair<int, double> FEM::NutonSolve()
@@ -454,7 +454,7 @@ pair<int, double> FEM::NutonSolve()
 		Q[i] = q; // Заносим в решение очередной временной слой
 	}
 
-	return make_pair(allCount, calcNormAtMainNodes()); // в конце возвращаем количество итераций по нелинейности для последнего временного слоя и погрешность то же для последнего 
+	return make_pair(count, calcNormAtMainNodes()); // в конце возвращаем количество итераций по нелинейности для последнего временного слоя и погрешность то же для последнего 
 }
 
 double FEM::CalculateU(double x, double t)
