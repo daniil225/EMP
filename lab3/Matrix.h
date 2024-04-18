@@ -41,6 +41,8 @@ struct SparseBlockOfMatrix
     void PrintDenseMatrix();
 
     void InsertBlock(Block &elem, int32_t i, int32_t j);
+    
+    void AddBlock(Block &elem, int32_t i, int32_t j);
     bool IsBlockInMatrix(int32_t i, int32_t j);
 
     ~SparseBlockOfMatrix() = default;

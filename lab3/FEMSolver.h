@@ -9,30 +9,6 @@
 #include <functional>
 
 
-struct LocalMatrix
-{
-private:
-    std::vector<std::vector<double>> G1 = {  {1, -1},
-                                             {-1, 1}};
-    std::vector<std::vector<double>>M1 = {  { 2.0/6.0, 1.0/6.0 },
-                                            { 1.0/6.0, 2.0/6.0} };
-
-    std::function<int32_t(int32_t)> mu = [](int32_t i) -> int32_t { return (i-1)%2; };
-    std::function<int32_t(int32_t)> vu = [](int32_t i) -> int32_t { return  int32_t((i-1)/2.0) % 2; };
-    std::function<int32_t(int32_t)> th = [](int32_t i) -> int32_t { return  int32_t((i-1)/4); };
-    double hx, hy, hz;
-
-    /* Метод генерации локальной матрицы  */
-    void GenerateLocalMatrix();
-    
-public:
-
-    std::vector<std::vector<Block>> matrix;                  // Локальная блочная матрица
-    std::vector<std::vector<std::pair<int32_t, int32_t>>> Local2GlobalIdx; // Матрица соответсвий локальной и глобальной нумерации
-
-
-    LocalMatrix(Finit_Element_StreightQuadPrismatic &FE);
-};
 
 struct ParamDE
 {
@@ -57,27 +33,84 @@ struct ParamDE
     
 };
 
+
 /* Генерация локальных матриц для глобальной матрицы */
-class GenerateLocalMatrix
+class LocalMatrix
 {
 private:
+
+    std::vector<std::vector<double>> G1 = {  {1, -1},
+                                             {-1, 1}};
+    std::vector<std::vector<double>>M1 = {  { 2.0/6.0, 1.0/6.0 },
+                                            { 1.0/6.0, 2.0/6.0} };
+
+    std::function<int32_t(int32_t)> mu = [](int32_t i) -> int32_t { return i%2; };  // x
+    std::function<int32_t(int32_t)> vu = [](int32_t i) -> int32_t { return  int32_t(i/2.0) % 2; }; // z
+    std::function<int32_t(int32_t)> th = [](int32_t i) -> int32_t { return  int32_t(i/4); }; // y
+    double hx, hy, hz;
+
+    Finit_Element_StreightQuadPrismatic FE;
+    /* Метод генерации локальной матрицы  */
+    void GenerateLocalMatrix();
+
+    
 public:
+
+    std::vector<std::vector<Block>> matrix;                  // Локальная блочная матрица
+    std::vector<std::vector<double>> f;                     //  Локальный вектор правой части 
+    std::vector<std::vector<std::pair<int32_t, int32_t>>> Local2GlobalIdx; // Матрица соответсвий локальной и глобальной нумерации
+   
+    LocalMatrix() = default;
+    LocalMatrix(const Finit_Element_StreightQuadPrismatic &FE);
+
+    /* Очищаем все внутреннее состояние */
+    void ClearInternalState();
+
+    /* Расчет локальной матрицы + Устанавливает размер заново */
+    void CalcLocalMatrix(const ParamDE &param);
+
+
+    /* Устанавливаем конечный элемент */
+    void SetFE(const Finit_Element_StreightQuadPrismatic &FE);
+
+    friend ostream& operator<<(ostream &os, const LocalMatrix &lcmatr);
+
+    ~LocalMatrix() = default;
 };
+
+
+
+
 
 class FEMSolver
 {
 private:
-    Grid3D_StreightQuadPrismatic Grid;
-    SLAU_BlockMatrix slau_block;
-    SLAU_ProfileMatrix slau_profile;
-    SLAU_SparseMatrix slau_sparse;
+    Grid3D_StreightQuadPrismatic Grid; // Ну собственно сетка 
+    SLAU_BlockMatrix slau_block; // СЛАУ с матрицей в блочном разряженном строчно-столбцовом формате 
+    SLAU_ProfileMatrix slau_profile; // СЛАУ с матрицей в профильном формате 
+    SLAU_SparseMatrix slau_sparse; // СЛАУ с матрицей в разряженном строчно столбцовом формате 
+    ParamDE param; // Параметры ДУ
+
+    void GenerateSLAU();
 
 public:
 
     FEMSolver() = default;
 
-    FEMSolver(const std::string &filename);
+    FEMSolver(const std::string &filename, const ParamDE &param);
 
+
+    /* Расчет решения */
+    void Calc();
+
+    /* Дробление сетки */
+    void DivideGrid(int32_t coef);
+
+
+    /* Построенная функция */
+    double u(double x, double y, double z, double t);
+
+    /* Расчет расстояния по лебегу для каждой из функции u_c and u_s */
 
     ~FEMSolver() = default;
 };

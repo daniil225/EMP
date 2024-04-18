@@ -1,5 +1,6 @@
 #include "Matrix.h"
 #include <iomanip>
+#include <fstream>
 
 SparseBlockOfMatrix::SparseBlockOfMatrix(int32_t N, int32_t size)
 {
@@ -25,25 +26,28 @@ void SparseBlockOfMatrix::AllocMemory(int32_t N, int32_t size)
 
 void SparseBlockOfMatrix::PrintDenseMatrix()
 {
-    std::cout << "Dense Block Matrix\n";
+    std::ofstream out("SparseBlockMatrix.txt");
+
+    out << "Dense Block Matrix\n";
     for (int32_t i = 0; i < N; i++)
     {
 
         for (int32_t j = 0; j < N; j++)
         {
             Block elem = GetBlockMatrix(*this, i, j);
-            std::cout << std::left << elem.pij << " " << -elem.cij << "   ";
+            out << std::left << std::fixed << std::setprecision(3) << elem.pij << " " << -elem.cij << "   ";
         }
-        std::cout << "\n";
+        out << "\n";
 
         for (int32_t j = 0; j < N; j++)
         {
             Block elem = GetBlockMatrix(*this, i, j);
-            std::cout << std::left << elem.cij << " " << elem.pij << "   ";
+            out << std::left << std::fixed << std::setprecision(3) << elem.cij << " " << elem.pij << "   ";
         }
 
-        std::cout << "\n\n";
+        out << "\n\n";
     }
+    out.close();
 }
 
 void SparseBlockOfMatrix::InsertBlock(Block &elem, int32_t i, int32_t j)
@@ -70,6 +74,44 @@ void SparseBlockOfMatrix::InsertBlock(Block &elem, int32_t i, int32_t j)
         for (ind = igi0; ind < igi1; ind++)
             if (jg[ind] == j)
                 ggl[ind] = elem;
+    }
+}
+
+void SparseBlockOfMatrix::AddBlock(Block &elem, int32_t i, int32_t j)
+{
+    if (i == j)
+    {
+        di[i].cij += elem.cij;
+        di[i].pij += elem.pij;
+    }
+
+    if (i < j)
+    {
+        int ind;
+        int igj0 = ig[j];
+        int igj1 = ig[j + 1];
+        for (ind = igj0; ind < igj1; ind++)
+        {
+            if (jg[ind] == i)
+            {
+                ggu[ind].cij += elem.cij;
+                ggu[ind].pij += elem.pij;
+            }
+        }
+    }
+    else
+    {
+        int ind;
+        int igi0 = ig[i];
+        int igi1 = ig[i + 1];
+        for (ind = igi0; ind < igi1; ind++)
+        {
+            if (jg[ind] == j)
+            {
+                ggl[ind].cij += elem.cij;
+                ggl[ind].pij += elem.pij;
+            }
+        }
     }
 }
 
@@ -126,19 +168,21 @@ void SparseMatrix::AllocMemory(int32_t N, int32_t size)
 
 void SparseMatrix::PrintDenseMatrix()
 {
-    std::cout << "Dense Sparse Matrix\n";
+    std::ofstream out("SparseMatrix.txt");
+    out << "Dense Sparse Matrix\n";
     for (int32_t i = 0; i < N; i++)
     {
 
         for (int32_t j = 0; j < N; j++)
         {
-            if(j % 2 == 0 && j > 0) std::cout << "   ";
+            if(j % 2 == 0 && j > 0) out << "   ";
             double elem = GetElementSparsematrix(*this, i, j);
-            std::cout << std::left << elem << " ";
+            out << std::left << elem << " ";
         }
-        if(i % 2 != 0) std::cout << "\n\n";
-        else std::cout << "\n";
+        if(i % 2 != 0) out << "\n\n";
+        else out << "\n";
     }
+    out.close();
 }
 
 void SparseMatrix::InsertElem(double elem, int32_t i, int32_t j)
