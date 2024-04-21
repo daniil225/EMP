@@ -30,7 +30,8 @@ struct ParamDE
 
 
     /* Краевые условия 2-ого рода с указанием границы */
-    
+    std::vector<std::function<double(double, double, double)>> Theta_s;
+    std::vector<std::function<double(double, double, double)>> Theta_c;
 };
 
 
@@ -43,6 +44,11 @@ private:
                                              {-1, 1}};
     std::vector<std::vector<double>>M1 = {  { 2.0/6.0, 1.0/6.0 },
                                             { 1.0/6.0, 2.0/6.0} };
+
+    std::vector<std::vector<double>> M_2KU = {  {4.0/36.0,2.0/36.0,2.0/36.0,1.0/36.0},
+                                                {2.0/36.0,4.0/36.0,1.0/36.0,2.0/36.0},
+                                                {2.0/36.0,1.0/36.0,4.0/36.0,2.0/36.0},
+                                                {1.0/36.0,2.0/36.0,2.0/36.0,4.0/36.0} };
 
     std::function<int32_t(int32_t)> mu = [](int32_t i) -> int32_t { return i%2; };  // x
     std::function<int32_t(int32_t)> vu = [](int32_t i) -> int32_t { return  int32_t(i/2.0) % 2; }; // z
@@ -91,26 +97,40 @@ private:
     SLAU_SparseMatrix slau_sparse; // СЛАУ с матрицей в разряженном строчно столбцовом формате 
     ParamDE param; // Параметры ДУ
 
+    std::vector<double> q; // Вектор решения 
+
     void GenerateSLAU();
 
 public:
 
     FEMSolver() = default;
 
-    FEMSolver(const std::string &filename, const ParamDE &param);
+    FEMSolver(const std::string &filename, const ParamDE &param, bool startCalc = false);
 
+    /* Подготовка к решению задачи. Включает построение портрета матрицы + генерация СЛАУ */
+    void PreCalc();
 
-    /* Расчет решения */
-    void Calc();
+    /* Расчет решения. Конкретно решение СЛАУ */
+    void Calc(int32_t maxiter = 1000, double eps = 1e-15, bool showiterslau = true, bool showcalcfinnode = true);
 
     /* Дробление сетки */
     void DivideGrid(int32_t coef);
+
+    /* Полная очистка внутреннего состояния. Включает только очистку струтктур для СЛАУ */
+    void ClearAll();
+
+    int32_t inline GetNodeCount() const {return Grid.GetGridSize().FEMCount; }
 
 
     /* Построенная функция */
     double u(double x, double y, double z, double t);
 
-    /* Расчет расстояния по лебегу для каждой из функции u_c and u_s */
+    double u_c(double x, double y, double z);
+    double u_s(double x, double y, double z);
+
+    /* Получить базовую сетку для интегрирования по области */
+    inline BaseGrid3DStreightQuadPrismatic GetBaseGrid() { return Grid.GetBaseGrid(); }
+    
 
     ~FEMSolver() = default;
 };

@@ -1155,16 +1155,17 @@ Finit_Element_StreightQuadPrismatic Grid3D_StreightQuadPrismatic::GetElement(con
 
         double YStart = FinitElement.e[0].y;
         double YEnd = FinitElement.e[4].y;
-
-        std::cout << "idx = " << idx << "\n";
-        std::cout << "XStart = " << XStart << " XEnd = " << XEnd << "\n";
-        std::cout << "ZStart = " << ZStart << " ZEnd = " << ZEnd << "\n";
-        std::cout << "YStart = " << YStart << " YEnd = " << YEnd << "\n";
-        std::cout << "\n";
+        // std::cout << "\n------------------------------\n";
+        // std::cout << "idx = " << idx << "\n";
+        // std::cout << "XStart = " << XStart << " XEnd = " << XEnd << "\n";
+        // std::cout << "ZStart = " << ZStart << " ZEnd = " << ZEnd << "\n";
+        // std::cout << "YStart = " << YStart << " YEnd = " << YEnd << "\n";
+        // std::cout << "--------------------------\n";
         if((x <= XEnd && x >= XStart) && (y <= YEnd && y >= YStart) && (z <= ZEnd && z >= ZStart)) break;
 
     }
-    std::cout << "idx = " << idx << "\n";
+
+    //std::cout << "Result idx = " << idx << "\n\n\n";
     return GetElement(idx);
 }
 

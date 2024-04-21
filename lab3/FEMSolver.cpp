@@ -4,7 +4,7 @@
 #include <tuple>
 #include <iomanip>
 /* LocalMatrix Class Realisation */
-
+using namespace std;
 /* Private */
 void LocalMatrix::GenerateLocalMatrix()
 {
@@ -129,8 +129,8 @@ void LocalMatrix::CalcLocalMatrix(const ParamDE &param)
             /* Подготовливаем p */
             
             double p1 = (hy*hz/hx)*G1[mu(i)][mu(j)]*M1[vu(i)][vu(j)]*M1[th(i)][th(j)];
-            double p2 = (hx*hy/hz)*M1[mu(i)][mu(j)]*G1[vu(i)][vu(j)]*M1[th(i)][th(j)];
-            double p3 = (hx*hz/hy)*M1[mu(i)][mu(j)]*M1[vu(i)][vu(j)]*G1[th(i)][th(j)];
+            double p2 = (hx*hz/hy)*M1[mu(i)][mu(j)]*G1[vu(i)][vu(j)]*M1[th(i)][th(j)];
+            double p3 = (hx*hy/hz)*M1[mu(i)][mu(j)]*M1[vu(i)][vu(j)]*G1[th(i)][th(j)];
             /* При желании можно добавить 3-и КУ. Это все лишь добавить второй интеграл по поверхности */
             block.pij = param.lambda*(p1+p2+p3) - param.ksi*param.omega*param.omega*hx*hy*hz*M1[mu(i)][mu(j)]*M1[vu(i)][vu(j)]*M1[th(i)][th(j)];
             
@@ -138,7 +138,6 @@ void LocalMatrix::CalcLocalMatrix(const ParamDE &param)
             /* Заносим в матрицу */
             matrix[i][j] = block;
 
-            /* Вектор правой части. Здесь же и происходит добавление 2-х КУ*/
             f_c += param.f_c(x,y,z)*hx*hy*hz*M1[mu(i)][mu(j)]*M1[vu(i)][vu(j)]*M1[th(i)][th(j)];
             f_s += param.f_s(x,y,z)*hx*hy*hz*M1[mu(i)][mu(j)]*M1[vu(i)][vu(j)]*M1[th(i)][th(j)];
 
@@ -149,6 +148,52 @@ void LocalMatrix::CalcLocalMatrix(const ParamDE &param)
         f[i][0] = f_s;
         f[i][1] = f_c;
     }
+
+    /* Учет 2-КУ */
+    /* В цикле по границе КЭ */
+    /* Шуруем по границе */
+    for(int32_t idx = 0; idx < FE.BoundCount; idx++)
+        {
+            /* Если это хотя бы граница и ее тип 2-ой*/
+            if(FE.Bound[idx].IsBound == 1 && FE.Bound[idx].BoundType == 2)
+            {
+                /* Обнуляем строки в матрице там где КУ 2 */
+                int32_t formula = FE.Bound[idx].BoundInfo;
+                double h = 0.0;
+                if(formula == 0 || formula == 1) h = hx*hz;
+                else if(formula == 2 || formula == 3) h = hy*hz;   // + 
+                else if(formula == 4 || formula == 5) h = hx*hy;
+
+                //cout << "formula = " << formula << " " << "h = " << h << "\n";
+                // Вставлаем вектор в правую часть 
+                for(int32_t i = 0; i < 4; i++)
+                {
+                    double f_c = 0.0;
+                    double f_s = 0.0;
+                    for(int32_t j = 0; j < 4; j++)
+                    {
+                        double x = FE.e[FE.Bound[idx].LocalIdx[j]].x;
+                        double y = FE.e[FE.Bound[idx].LocalIdx[j]].y;
+                        double z = FE.e[FE.Bound[idx].LocalIdx[j]].z;
+                        
+                        f_s += h*param.Theta_s[formula](x,y,z)*M_2KU[i][j];
+                        f_c += h*param.Theta_c[formula](x,y,z)*M_2KU[i][j];
+
+                        double fs = param.Theta_s[formula](x,y,z);
+                        double fc = param.Theta_c[formula](x,y,z);
+
+                        //cout << param.Theta_s[formula](x,y,z) << " " << x << " " << y << " " << z << "\n";
+                    }
+                    //cout << "Add to local IDX = " << FE.Bound[idx].LocalIdx[i] << "\n";
+                    f[FE.Bound[idx].LocalIdx[i]][0] += f_s;
+                    f[FE.Bound[idx].LocalIdx[i]][1] += f_c;
+                    //cout << "\n";
+                }
+
+                // std::cout << formula << "Global IDX = " << FE.Bound[idx].GlobalIdx[0] << ", " <<
+                //                      FE.Bound[idx].GlobalIdx[1] << ", " << FE.Bound[idx].GlobalIdx[2] << ", " << FE.Bound[idx].GlobalIdx[3]<< "\n";
+            }
+        }
 }
 
 
@@ -245,15 +290,77 @@ void FEMSolver::GenerateSLAU()
 
 
 /* Public  */
-FEMSolver::FEMSolver(const std::string &filename, const ParamDE &param_): param(param_)
+FEMSolver::FEMSolver(const std::string &filename, const ParamDE &param_, bool startCalc): param(param_)
 {
 
     /* Генерация сетки */
     GridStatus Status = Grid.Load(filename);
     if(Status.GetState() == State::OK) Status = Grid.GenerateGrid();
-    else cout << Status.GetMsg();
+    else std::cout << Status.GetMsg();
 
-    Grid.PrintGridSlice(0);
+
+    /* Начать ли вычислять СЛАУ  */
+    if(startCalc)
+    {
+        ClearAll();
+        PreCalc();
+    }
+
+
+}
+
+void FEMSolver::ClearAll()
+{
+    if(slau_block.N > 0)
+    {
+        slau_block.matrix.di.clear();
+        slau_block.matrix.ggl.clear();
+        slau_block.matrix.ggu.clear();
+        slau_block.matrix.ig.clear();
+        slau_block.matrix.jg.clear();
+        slau_block.b.clear();
+        
+        slau_block.matrix.N = -1;
+        slau_block.matrix.size = -1;
+        slau_block.size = -1;
+        slau_block.N = -1;
+    }
+
+    if(slau_sparse.N > 0)
+    {
+        slau_sparse.matrix.di.clear();
+        slau_sparse.matrix.ggl.clear();
+        slau_sparse.matrix.ggu.clear();
+        slau_sparse.matrix.ig.clear();
+        slau_sparse.matrix.jg.clear();
+        slau_sparse.b.clear();
+
+        slau_sparse.matrix.N = -1;
+        slau_sparse.matrix.size = -1;
+        slau_sparse.size = -1;
+        slau_sparse.N = -1;
+    }
+
+    if(slau_profile.N > 0)
+    {
+        slau_profile.matrix.di.clear();
+        slau_profile.matrix.ggl.clear();
+        slau_profile.matrix.ggu.clear();
+        slau_profile.matrix.ig.clear();
+        slau_profile.b.clear();
+        slau_profile.matrix.N = -1;
+        slau_profile.matrix.size = -1;
+        slau_profile.size = -1;
+        slau_profile.N = -1;
+    }
+    
+    if(!q.empty()) q.clear();
+}
+
+void FEMSolver::PreCalc()
+{
+    cout << "Generate SLAU start...\n";
+    //Grid.PrintGridSlice(0);
     /* Генерация портрета матрицы */
     GeneratePortrait(slau_block, Grid);
     slau_block.N = slau_block.matrix.N;
@@ -287,15 +394,14 @@ FEMSolver::FEMSolver(const std::string &filename, const ParamDE &param_): param(
         slau_sparse.b[j] = slau_block.b[i][1];
         j++;
     }
+    cout << "Generate SLAU end\n\n";
     /* А теперь здесь нужно решить СЛАУ */
-
-
 }
 
-
 /* Расчет решения */
-void FEMSolver::Calc()
+void FEMSolver::Calc(int32_t maxiter, double eps, bool showiterslau, bool showcalcfinnode)
 {
+    cout << "SLAU solve start...\n";
     /* Собственно решение СЛАУ */
     /* Для начала перегоним форматы */
     SLAUSolvers::IterationSolvers::SLAU iterslau;
@@ -307,24 +413,32 @@ void FEMSolver::Calc()
     std::copy(slau_sparse.matrix.ig.begin(), slau_sparse.matrix.ig.end(),iterslau.matrix.ig);
     std::copy(slau_sparse.matrix.jg.begin(), slau_sparse.matrix.jg.end(),iterslau.matrix.jg);
     std::copy(slau_sparse.b.begin(), slau_sparse.b.end(), iterslau.f);
-    iterslau.maxiter = 100;
-    iterslau.eps = 1e-8;
+    iterslau.maxiter = maxiter;
+    iterslau.eps = eps;
 
     SLAUSolvers::IterationSolvers::SetSolveMode(iterslau, SLAUSolvers::IterationSolvers::Solvemode::LOS_NOSYMETRIC_DIAG_FACT);
-    SLAUSolvers::IterationSolvers::SolveSLAU(iterslau, true);
+    SLAUSolvers::IterationSolvers::SolveSLAU(iterslau, showiterslau);
+    q.resize(iterslau.N);
+    
+    for(int32_t i = 0; i < iterslau.N; i++)
+        q[i] = iterslau.x[i];
 
+    cout << "SLAU solve end\n\n";
     //SLAUSolvers::IterationSolvers::PrintX(iterslau);
-    for(int32_t i = 0, j = 0; i < iterslau.N; i+=2, j++)
+    
+    if(showcalcfinnode)
     {
-        double x, y, z;
-        x = Grid[j].x;
-        y = Grid[j].y;
-        z = Grid[j].z;
-        double u_s = param.u_s(x,y, z);
-        double u_c = param.u_c(x, y, z);
-        cout << "Node num = " << j  << fixed << std::setprecision(4) << " u_s - u_s* = " << iterslau.x[i] - u_s << "  u_c - u_c* = " << iterslau.x[i+1] - u_c << "\n";
+        for(int32_t i = 0, j = 0; i < iterslau.N; i+=2, j++)
+        {
+            double x, y, z;
+            x = Grid[j].x;
+            y = Grid[j].y;
+            z = Grid[j].z;
+            double u_s = param.u_s(x,y, z);
+            double u_c = param.u_c(x, y, z);
+            cout << "Node num = " << j  << fixed << std::setprecision(4) << " u_s - u_s* = " << this->u_s(x,y,z) - u_s << "  u_c - u_c* = " << this->u_c(x,y,z) - u_c << "\n";
+        }
     }
-
     
 }
 
@@ -343,5 +457,109 @@ void FEMSolver::DivideGrid(int32_t coef)
 double FEMSolver::u(double x, double y, double z, double t)
 {
 
+}
+
+/* cos компонента решения */
+double FEMSolver::u_c(double x, double y, double z)
+{
+    double res = 0.0;
+    /* Генерация Базисных функций для представления решения */
+    /* Всего 8 базисных функций по количеству узлов на КЭ */
+    Finit_Element_StreightQuadPrismatic FE = Grid.GetElement(x,y,z);
+
+    double x0 = FE.e[0].x;
+    double x1 = FE.e[1].x;
+    double hx = x1 - x0;
+
+    double y0 = FE.e[0].y;
+    double y1 = FE.e[4].y;
+    double hy = y1 - y0;
+
+    double z0 = FE.e[0].z;
+    double z1 = FE.e[2].z;
+    double hz = z1 - z0;
+
+    auto X1 = [&](double x) -> double { return (x1-x)/hx; };
+    auto X2 = [&](double x) -> double { return (x-x0)/hx; };
+
+    auto Y1 = [&](double y) -> double { return (y1-y)/hy; };
+    auto Y2 = [&](double y) -> double { return (y-y0)/hy; };
+
+    auto Z1 = [&](double z) -> double { return (z1-z)/hz; };
+    auto Z2 = [&](double z) -> double { return (z-z0)/hz; };
+
+
+    auto psi1 = [&](double x, double y, double z) { return X1(x)*Z1(z)*Y1(y); };
+    auto psi2 = [&](double x, double y, double z) { return X2(x)*Z1(z)*Y1(y); };
+    auto psi3 = [&](double x, double y, double z) { return X1(x)*Z2(z)*Y1(y); };
+    auto psi4 = [&](double x, double y, double z) { return X2(x)*Z2(z)*Y1(y); };
+
+    auto psi5 = [&](double x, double y, double z) { return X1(x)*Z1(z)*Y2(y); };
+    auto psi6 = [&](double x, double y, double z) { return X2(x)*Z1(z)*Y2(y); };
+    auto psi7 = [&](double x, double y, double z) { return X1(x)*Z2(z)*Y2(y); };
+    auto psi8 = [&](double x, double y, double z) { return X2(x)*Z2(z)*Y2(y); };
+    
+    function<double(double, double, double)> PSI[8] = {psi1, psi2, psi3, psi4, psi5, psi6, psi7, psi8};
+
+    /* само решение */
+    //FE.PrintElement();
+    for(int32_t i = 0; i < 8; i++)
+        res += q[2*FE.GlobalIdx[i]+1]*PSI[i](x,y,z);
+
+    return res;
+}
+
+/* sin компонента решения */
+double FEMSolver::u_s(double x, double y, double z)
+{
+    double res = 0.0;
+    /* Генерация Базисных функций для представления решения */
+    /* Всего 8 базисных функций по количеству узлов на КЭ */
+    Finit_Element_StreightQuadPrismatic FE = Grid.GetElement(x,y,z);
+
+    double x0 = FE.e[0].x;
+    double x1 = FE.e[1].x;
+    double hx = x1 - x0;
+
+    double y0 = FE.e[0].y;
+    double y1 = FE.e[4].y;
+    double hy = y1 - y0;
+
+    double z0 = FE.e[0].z;
+    double z1 = FE.e[2].z;
+    double hz = z1 - z0;
+
+    auto X1 = [&](double x) -> double { return (x1-x)/hx; };
+    auto X2 = [&](double x) -> double { return (x-x0)/hx; };
+
+    auto Y1 = [&](double y) -> double { return (y1-y)/hy; };
+    auto Y2 = [&](double y) -> double { return (y-y0)/hy; };
+
+    auto Z1 = [&](double z) -> double { return (z1-z)/hz; };
+    auto Z2 = [&](double z) -> double { return (z-z0)/hz; };
+
+
+    auto psi1 = [&](double x, double y, double z) { return X1(x)*Z1(z)*Y1(y); };
+    auto psi2 = [&](double x, double y, double z) { return X2(x)*Z1(z)*Y1(y); };
+    auto psi3 = [&](double x, double y, double z) { return X1(x)*Z2(z)*Y1(y); };
+    auto psi4 = [&](double x, double y, double z) { return X2(x)*Z2(z)*Y1(y); };
+
+    auto psi5 = [&](double x, double y, double z) { return X1(x)*Z1(z)*Y2(y); };
+    auto psi6 = [&](double x, double y, double z) { return X2(x)*Z1(z)*Y2(y); };
+    auto psi7 = [&](double x, double y, double z) { return X1(x)*Z2(z)*Y2(y); };
+    auto psi8 = [&](double x, double y, double z) { return X2(x)*Z2(z)*Y2(y); };
+    
+    double q_local[8]; // Коэфициенты разложения
+    function<double(double, double, double)> PSI[8] = {psi1, psi2, psi3, psi4, psi5, psi6, psi7, psi8};
+
+    /* само решение */
+    //std::cout << "\n";
+    for(int32_t i = 0; i < 8; i++)
+    {
+        //cout << "Psi(" << x << "," << y << "," << z << ") = " << PSI[i](x,y,z) << "\n";
+        res += q[2*FE.GlobalIdx[i]]*PSI[i](x,y,z);
+    }
+    return res;
+    
 }
 
