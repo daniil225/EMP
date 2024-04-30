@@ -111,7 +111,7 @@ public:
     void PreCalc();
 
     /* Расчет решения. Конкретно решение СЛАУ */
-    void Calc(int32_t maxiter = 1000, double eps = 1e-15, bool showiterslau = true, bool showcalcfinnode = true);
+    double Calc(int32_t maxiter = 1000, double eps = 1e-15, bool showiterslau = true, bool showcalcfinnode = true, bool LU = false, bool LOS = true);
 
     /* Дробление сетки */
     void DivideGrid(int32_t coef);
@@ -119,7 +119,7 @@ public:
     /* Полная очистка внутреннего состояния. Включает только очистку струтктур для СЛАУ */
     void ClearAll();
 
-    int32_t inline GetNodeCount() const {return Grid.GetGridSize().FEMCount; }
+    int32_t inline GetNodeCount() const {return Grid.GetGridSize().Dim; }
 
 
     /* Построенная функция */

@@ -23,11 +23,11 @@ ParamDE Test1()
     ParamDE Test;
     Test.ksi = 0;
     Test.lambda = 2;
-    Test.omega = 1;
+    Test.omega = 3;
     Test.sigma = 1;
 
-    Test.u_c = [](double x, double y, double z) { return x+y+z; };
-    Test.u_s = [](double x, double y, double z) { return x+y+z; };
+    Test.u_c = [](double x, double y, double z) { return x*x*x+y*y*y+z*z*z; };
+    Test.u_s = [](double x, double y, double z) { return  7*x*x*x+y*y*y+4*z*z*z; };
 
 
     Test.f_c = [&](double x, double y, double z) { return -Test.lambda*div_grad(Test.u_c)(x,y,z) + Test.omega*Test.sigma*Test.u_s(x,y,z) - Test.omega*Test.omega*Test.ksi*Test.u_c(x,y,z); };
@@ -59,13 +59,13 @@ ParamDE Test1()
 ParamDE Test2()
 {
     ParamDE Test;
-    Test.ksi = -2;
-    Test.lambda = 2;
-    Test.omega = 1;
-    Test.sigma = 1;
+    Test.ksi = 10e-11;
+    Test.lambda = 10e3;
+    Test.omega = 10e5;
+    Test.sigma = 10e4;
 
-    Test.u_c = [](double x, double y, double z) { return x*x*x+y*y*y+z*z*std::cos(x); };
-    Test.u_s = [](double x, double y, double z) { return x*x*x+y*y*y+z*z*std::sin(x); };
+    Test.u_c = [](double x, double y, double z) { return std::cos(x+y)+ 4*z*z*std::tan(z); };
+    Test.u_s = [](double x, double y, double z) { return std::sin(x+y) - 12*z*z*std::log2(5+z); };
 
 
     Test.f_c = [&](double x, double y, double z) { return -Test.lambda*div_grad(Test.u_c)(x,y,z) + Test.omega*Test.sigma*Test.u_s(x,y,z) - Test.omega*Test.omega*Test.ksi*Test.u_c(x,y,z); };

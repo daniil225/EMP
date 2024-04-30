@@ -76,15 +76,27 @@ struct ProfileMatrix
 {
     int32_t N = -1;
     int32_t size = -1;
+    
+    std::vector<int> ia;
     std::vector<double> di;
-    std::vector<double> ggu;
-    std::vector<double> ggl;
-    std::vector<int32_t> ig;
+    std::vector<double> al;
+    std::vector<double> au;
+
+    ProfileMatrix() = default;
+
+    ProfileMatrix(int32_t N, int32_t size);
+    void AllocateMemory(int32_t N, int32_t size);
+
+    void InsertElem(double elem, int32_t i, int32_t j);
+
+    ~ProfileMatrix() = default;
 };
+
 
 Block GetBlockMatrix(SparseBlockOfMatrix &Matr, int32_t i, int32_t j);
 double GetElementSparsematrix(SparseMatrix &Matr, int32_t i, int32_t j);
 void BlockMatrix2SparseMatrix(SparseBlockOfMatrix &src_Matr, SparseMatrix& dst_Matr);
 
+void SparseMatrix2ProfileMatrix(SparseMatrix &src_Matr, ProfileMatrix& dst_Matr);
 
 #endif

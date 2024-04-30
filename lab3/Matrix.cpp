@@ -285,6 +285,49 @@ double GetElementSparsematrix(SparseMatrix &Matr, int32_t i, int32_t j)
 }
 
 
+
+ProfileMatrix::ProfileMatrix(int32_t N, int32_t size)
+{
+    this->N = N;
+    this->size = size;
+    
+    ia.resize(N+1);
+    au.resize(size);
+    al.resize(size);
+    di.resize(N);
+}
+
+void ProfileMatrix::AllocateMemory(int32_t N, int32_t size)
+{
+    this->N = N;
+    this->size = size;
+    
+    ia.resize(N+1);
+    au.resize(size);
+    al.resize(size);
+    di.resize(N);
+}
+
+void ProfileMatrix::InsertElem(double elem, int32_t i, int32_t j)
+{
+    if(i == j)
+    {
+        di[i] = elem;
+    }
+
+    if(i < j)
+    {
+        int32_t ind = ia[j+1] - (j-i);
+        au[ind] = elem;
+    }
+    else
+    {
+        int32_t ind = ia[i+1] - (i-j);
+        al[ind] = elem;
+    }
+}
+
+
 void BlockMatrix2SparseMatrix(SparseBlockOfMatrix &src_Matr, SparseMatrix &dst_Matr)
 {
     int32_t size_row1 = 0;
@@ -406,8 +449,51 @@ void BlockMatrix2SparseMatrix(SparseBlockOfMatrix &src_Matr, SparseMatrix &dst_M
         }
 
     }
+}
+
+void SparseMatrix2ProfileMatrix(SparseMatrix &src_Matr, ProfileMatrix& dst_Matr)
+{
+    /* В цикле по элементам */
+    dst_Matr.N = src_Matr.N;
+
+    dst_Matr.ia.resize(src_Matr.N+1);
+    dst_Matr.ia[0] = 0;
+    //dst_Matr.ia[1] = 0;
+
+    for(int32_t i = 0; i < src_Matr.N; i++)
+    {
+        int32_t cnt_elem = 0;
+        for(int32_t j = 0; j < i; j++)
+        {
+            double elem = GetElementSparsematrix(src_Matr, i, j);
+            if(std::abs(elem) >= 0)
+            {
+                cnt_elem = i - j;
+                break;
+            }
+        }
+        dst_Matr.ia[i+1] = dst_Matr.ia[i] + cnt_elem;
+
+        
+    }
+
+    // Выделение памяти
+    dst_Matr.size = dst_Matr.ia[dst_Matr.N];
+    dst_Matr.au.resize(dst_Matr.size);
+    dst_Matr.al.resize(dst_Matr.size);
+    dst_Matr.di.resize(dst_Matr.N);
 
 
-    
+    for(int32_t i = 0; i < src_Matr.N; i++)
+    {
+        int32_t cnt_elem = 0;
+        for(int32_t j = 0; j < src_Matr.N; j++)
+        {
+            double elem = GetElementSparsematrix(src_Matr, i, j);
+
+            if(std::abs(elem) > 0)
+                dst_Matr.InsertElem(elem, i, j);
+        }
+    }
 
 }

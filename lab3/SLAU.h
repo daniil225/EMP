@@ -31,9 +31,15 @@ struct SLAU_ProfileMatrix
 {
     int32_t N = -1;
     int32_t size = -1;
-    ProfileMatrix matrix;
-    std::vector<double> b;
+    ProfileMatrix Matr;
+    std::vector<double> f;
     std::vector<double> x;
 };
+
+
+void LUDecomposition(SLAU_ProfileMatrix &slau);
+void GausForward(SLAU_ProfileMatrix &slau,std::vector<double> &y);
+void GausBack(SLAU_ProfileMatrix &slau, std::vector<double> &x);
+void SolveSlau(SLAU_ProfileMatrix &slau ,std::vector<double>&x);
 
 #endif
