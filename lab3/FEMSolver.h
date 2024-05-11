@@ -132,6 +132,8 @@ public:
     inline BaseGrid3DStreightQuadPrismatic GetBaseGrid() { return Grid.GetBaseGrid(); }
     
 
+    SLAU_SparseMatrix GetSparseSLAU() const { return slau_sparse; }
+
     ~FEMSolver() = default;
 };
 

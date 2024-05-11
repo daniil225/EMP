@@ -394,7 +394,7 @@ void FEMSolver::PreCalc()
     }
 
     /* Перегоняем в профильный формат матрицы */
-    // SparseMatrix2ProfileMatrix(slau_sparse.matrix, slau_profile.Matr);
+    //SparseMatrix2ProfileMatrix(slau_sparse.matrix, slau_profile.Matr);
     // slau_profile.N = slau_profile.Matr.N;
     // slau_profile.size = slau_profile.Matr.size;
     // slau_profile.f.resize(slau_profile.N);
