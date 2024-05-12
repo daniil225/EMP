@@ -406,6 +406,27 @@ namespace SLAUSolvers
 					for (int i = 0; i < 7 * slau.N; i++)
 						SuportMemoryPool_[i] = 0;
 				}
+				else if (	slau.mode == Solvemode::BCG_NOSYMETRIC_CLASSIC ||
+						 	slau.mode == Solvemode::BCG_NOSYMETRIC_LU_FACT
+						)
+				{
+					/* Память под следующие вектора для классического ЛОС
+						rk -
+						pk -
+						zk -
+						sk -
+						Azk - A*z(k-1)
+						ATsk - A(T)*s(k-1)
+						r_true - истинная невязка f - A*xk 
+						итого 7*N
+					*/
+					slau.SuportMemoryPool_ = new double[7 * slau.N];
+					double* SuportMemoryPool_ = slau.SuportMemoryPool_;
+					// Зануляем память 
+					for (int i = 0; i < 7 * slau.N; i++)
+						SuportMemoryPool_[i] = 0;
+
+				}
 				/* Не симметричные матрицы */
 				
 			}
@@ -778,6 +799,51 @@ namespace SLAUSolvers
 			}
 		}
 
+		void MultAT(const Sparse_matrix& matr, const double* x, double* res)
+		{
+			double* ggl = matr.ggl;
+			double* ggu = matr.ggu;
+			double* di = matr.di;
+			int* ig = matr.ig;
+			int* jg = matr.jg;
+			int N = matr.N;
+			int size = matr.size;
+
+			for (int i = 0; i < N; i++)
+			{
+				res[i] = di[i] * x[i];
+				int igi0 = ig[i];
+				int igi1 = ig[i + 1];
+				for (int j = igi0; j < igi1; j++)
+				{
+					int k = jg[j];
+					res[i] += ggu[j] * x[k];
+					res[k] += ggl[j] * x[i];
+				}
+			}
+		}
+
+		void MultFactU(const Fact_matrix &matr, const double *x, double *res)
+		{
+			double *ggu = matr.ggu;
+			double *di = matr.di;
+			int* ig = matr.ig;
+			int* jg = matr.jg;
+			int N = matr.N;
+			int size = matr.size;
+
+			for (int i = 0; i < N; i++)
+			{
+				res[i] = 1.0 * x[i];
+				int igi0 = ig[i];
+				int igi1 = ig[i + 1];
+				for (int j = igi0; j < igi1; j++)
+				{
+					int k = jg[j];
+					res[k] += ggu[j] * x[i];
+				}
+			}
+		}
 
 		void ActionVec(const double a, const double* x1, const double b, const double* x2, double* y, const int N)
 		{
@@ -827,6 +893,8 @@ namespace SLAUSolvers
 			}
 		}
 
+
+
 		void normal(Fact_matrix& matr, const double* b, double* res)
 		{
 			int N = matr.N;
@@ -848,6 +916,26 @@ namespace SLAUSolvers
 			}
 		}
 
+		void normalUT(Fact_matrix& matr, const double* b, double* res)
+		{
+			int N = matr.N;
+			double* di_fact = matr.di;
+			double* ggu_fact = matr.ggu;
+			int* ig = matr.ig;
+			int* jg = matr.jg;
+
+			if (b != res)
+				CopyVec(b, res, N);
+
+			for (int i = 0; i < N; i++) {
+				int igi0 = ig[i];
+				int igi1 = ig[i + 1];
+				for (int j = igi0; j < igi1; j++)
+					res[i] -= ggu_fact[j] * res[jg[j]];
+
+				res[i] = res[i] /1.0; //di_fact[i];
+			}
+		}
 		/* Обратный ход */
 		void reverse(Fact_matrix_symetric& matr, const double* x, double* res)
 		{
@@ -861,7 +949,7 @@ namespace SLAUSolvers
 				CopyVec(x, res, N);
 
 			for (int j = N - 1; j >= 0; j--) {
-				res[j] = res[j] / di_fact[j];
+				res[j] = res[j] /1.0; //di_fact[j]; // LU modification
 
 				int igj0 = ig[j];
 				int igj1 = ig[j + 1];
@@ -873,11 +961,37 @@ namespace SLAUSolvers
 			}
 		}
 
+		/* 
+			@warning  Используется модификация для работы с LU разложением. нужно пофиксить и сделать функции для работы с другими LU факторизациями
+		*/
 		void reverse(Fact_matrix& matr, const double* x, double* res)
 		{
 			int N = matr.N;
 			double* di_fact = matr.di;
 			double* ggu_fact = matr.ggu;
+			int* ig = matr.ig;
+			int* jg = matr.jg;
+
+			if (x != res)
+				CopyVec(x, res, N);
+
+			for (int j = N - 1; j >= 0; j--) {
+				res[j] = res[j] /1.0; //di_fact[j];  // LU modification 
+				int igj0 = ig[j];
+				int igj1 = ig[j + 1];
+				for (int i = igj0; i < igj1; i++)
+				{
+					int k = jg[i];
+					res[k] -= ggu_fact[i] * res[j];
+				}
+			}
+		}
+
+		void reverseLT(Fact_matrix &matr, const double *x, double *res)
+		{
+			int N = matr.N;
+			double* di_fact = matr.di;
+			double* ggl_fact = matr.ggl;
 			int* ig = matr.ig;
 			int* jg = matr.jg;
 
@@ -891,7 +1005,7 @@ namespace SLAUSolvers
 				for (int i = igj0; i < igj1; i++)
 				{
 					int k = jg[i];
-					res[k] -= ggu_fact[i] * res[j];
+					res[k] -= ggl_fact[i] * res[j];
 				}
 			}
 		}
@@ -1125,7 +1239,7 @@ namespace SLAUSolvers
 					sum_d = 0.0;
 					for (int k = i0; k < i1; ++k)
 						sum_d += ggl_fact[k] * ggu_fact[k];
-					di_fact[i] = di_fact[i] - sum_d;
+ 					di_fact[i] = di_fact[i] - sum_d;
 				}
 
 			}
@@ -2292,12 +2406,252 @@ namespace SLAUSolvers
 		
 		double BCG_Classic(SLAU& slau, bool printIteration)
 		{
-			return 0;
+			auto printIterationProcess = [printIteration](double res, int k)
+			{
+				if (printIteration)
+					cout << "Iteration k = " << k + 1 << "  || f-A*xk ||/|| f || = " << res << "\n";
+			};
+			double res = 0.0; // Возвращаемое значение невязки 
+			int index = 0;
+			int N = slau.N;
+
+			/* Вспомогательные вектора */
+			double* rk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double* zk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double* Azk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double* pk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double *sk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double *ATsk = &slau.SuportMemoryPool_[index];
+
+			double* r_true = rk; // Псевдоним 
+			/* Псевдонимы для используемых векторов */
+			double* f = slau.f;
+			Sparse_matrix& matr = slau.matrix;
+
+			/* Вспомогательные величины */
+			int maxiter = slau.maxiter;
+			double eps = slau.eps;
+			double f_norm = Norma(f, N);
+
+			/* Если x нет то производим инициализацию */
+			try
+			{
+				// k = 0
+				// Если начального приближения не было то 
+				double* xk;
+				if (slau.x == nullptr)
+				{
+
+					slau.x = new double[N];
+					xk = slau.x;
+					/* Зануление */
+					for (int i = 0; i < N; i++)
+						xk[i] = 0;
+
+					/* Проводим инициализацию векторов */
+					CopyVec(f, rk, N); // r0 = b
+				}
+				else
+				{
+					xk = slau.x;
+					MultA(matr, xk, rk); // A*x0
+					ActionVec(1, f, -1, rk, rk, N); // r0 = f - A*x0
+				}
+
+				CopyVec(rk, pk, N);
+				CopyVec(rk, zk, N);
+				CopyVec(rk, sk, N);
+
+				double r_true_norm = Norma(r_true, N);
+				res = r_true_norm / f_norm;
+				printIterationProcess(res, 0);
+				if (res < eps) return res;
+
+				for (int k = 1; k < maxiter; k++)
+				{
+					/* Алгоритм */
+					double prk = ScalarMult(pk, rk, N);  // (pk-1; rk-1)
+					MultA(matr, zk, Azk);  // A*zk-1
+					double alphak = prk/ScalarMult(sk, Azk, N); // alphak
+
+					ActionVec(1.0, xk, alphak, zk, xk, N); // xk = xk-1 + alphak*zk-1
+					ActionVec(1.0,rk, -alphak, Azk, rk, N); // rk = rk-1 - alphak*A*zk-1
+					MultAT(matr, sk, ATsk); // A(T)*sk-1
+					ActionVec(1.0, pk, -alphak, ATsk, pk, N); // pk = pk-1 - alphak*A(T)*sk-1
+					double betak = ScalarMult(pk, rk, N)/prk;
+					ActionVec(1.0, rk, betak, zk, zk, N);
+					ActionVec(1.0, pk, betak, sk, sk, N);
+
+					// Расчет невязки 
+					MultA(matr, xk, r_true);
+					ActionVec(1, f, -1, r_true, r_true, N); // r_true = f - A*xk
+					double r_true_norm = Norma(r_true, N);
+
+					/* Распечатка итерационного процесса с выводом невязки*/
+					res = r_true_norm / f_norm;
+					printIterationProcess(res, k);
+
+					// Выход по невязке 
+					if (res < eps) break;
+				}
+
+			}
+			catch (bad_alloc& e)
+			{
+				cout << e.what();
+				cout << "\n Работа программы прекращена\n";
+				exit(-1);
+			}
+			catch (...)
+			{
+				cout << "Неизвестная ошибка\n";
+				exit(-1);
+			}
+
+			return res;
+
 		}
 
 		double BCG_LUFact(SLAU& slau, bool printIteration)
 		{
-			return 0;
+			auto printIterationProcess = [printIteration](double res, int k)
+			{
+				if (printIteration)
+					cout << "Iteration k = " << k + 1 << "  || f-A*xk ||/|| f || = " << res << "\n";
+			};
+			double res = 0.0; // Возвращаемое значение невязки 
+			int index = 0;
+			int N = slau.N;
+
+			LUFactor(slau); // Факторизация 
+
+
+			/* Вспомогательные вектора */
+			double* rk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double* zk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double* LAUzk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double* pk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double *sk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double *UT_AT_LT_sk = &slau.SuportMemoryPool_[index];
+			index += N;
+			double *tmp_vec = &slau.SuportMemoryPool_[index]; // Используется для промежуточных вычислений 
+
+			double* r_true = rk; // Псевдоним 
+			/* Псевдонимы для используемых векторов */
+			double* f = slau.f;
+			Sparse_matrix& matr = slau.matrix;
+			Fact_matrix& Fmatr_s = slau.Fmatr;
+
+			/* Вспомогательные величины */
+			int maxiter = slau.maxiter;
+			double eps = slau.eps;
+			double f_norm = Norma(f, N);
+
+			/* Если x нет то производим инициализацию */
+
+			try
+			{
+				// k = 0
+				// Если начального приближения не было то 
+				double* xk;
+				if (slau.x == nullptr)
+				{
+
+					slau.x = new double[N];
+					xk = slau.x;
+					/* Зануление */
+					for (int i = 0; i < N; i++)
+						xk[i] = 0;
+
+					/* Проводим инициализацию векторов */
+					CopyVec(f, rk, N); // r0 = b
+				}
+				else
+				{
+					xk = slau.x;
+					MultA(matr, xk, rk); // A*x0
+					ActionVec(1, f, -1, rk, rk, N); // r0 = f - A*x0
+					
+				}
+
+				normal(Fmatr_s, rk, rk); // L^-1*rk
+				
+				CopyVec(rk, pk, N);
+				CopyVec(rk, zk, N);
+				CopyVec(rk, sk, N);
+
+				double r_true_norm = Norma(r_true, N);
+				res = r_true_norm / f_norm;
+				printIterationProcess(res, 0);
+				if (res < eps) return res;
+
+				for (int k = 1; k < maxiter; k++)
+				{
+					/* Алгоритм */
+					double prk = ScalarMult(pk, rk, N);  // (pk-1; rk-1)
+					/* Вычисляем произведение L^-1*A*U^-1*zk-1 */
+					reverse(Fmatr_s, zk, LAUzk); // U^-1*zk-1
+					MultA(matr, LAUzk, tmp_vec); // A*U^-1*zk-1
+					normal(Fmatr_s, tmp_vec, LAUzk); // L^-1*A*U^-1*zk-1
+
+					double alphak = prk/ScalarMult(sk, LAUzk, N);
+					ActionVec(1.0, xk, alphak, zk, xk, N); // xk = xk-1 + alphak*zk-1
+					ActionVec(1.0,rk, -alphak, LAUzk, rk, N); // rk = rk-1 - alphak*LAUzk*zk-1
+
+					/*  Вычисляем произведение U^-T*A(T)*L^-T*sk-1 */
+					reverseLT(Fmatr_s, sk, UT_AT_LT_sk); // L^-T*sk-1
+					MultAT(matr, UT_AT_LT_sk, tmp_vec); // A(T)*L^-T*sk-1
+					normalUT(Fmatr_s, tmp_vec, UT_AT_LT_sk); // U^-T*A(T)*L^-T*sk-1
+
+					ActionVec(1.0, pk, -alphak, UT_AT_LT_sk, pk ,N); // pk = pk-1 - alphak*UT_AT_LT*sk-1
+					double betak = ScalarMult(pk, rk, N)/prk;
+					ActionVec(1.0, rk, betak, zk, zk, N);
+					ActionVec(1.0, pk, betak, sk, sk, N);
+
+					// Расчет невязки 
+					reverse(Fmatr_s, slau.x, tmp_vec); // Получили вектор x
+
+					MultA(matr, tmp_vec, r_true); // A*xk
+					ActionVec(1, f, -1, r_true, r_true, N); // r_true = f - A*xk
+					double r_true_norm = Norma(r_true, N); // Посчитали норму 
+
+					normal(Fmatr_s, rk, rk); // L^-1*rk - сновва невязка предобусловленной сичтемы 
+					/* Распечатка итерационного процесса с выводом невязки*/
+					
+					res = r_true_norm / f_norm;
+					printIterationProcess(res, k);
+
+					// Выход по невязке 
+					if (res < eps) break;
+				}	
+			}
+			catch (bad_alloc& e)
+			{
+				cout << e.what();
+				cout << "\n Работа программы прекращена\n";
+				exit(-1);
+			}
+			catch (...)
+			{
+				cout << "Неизвестная ошибка\n";
+				exit(-1);
+			}
+
+			/* x* = U*xm */
+			reverse(Fmatr_s, slau.x, slau.x);
+			//CopyVec(tmp_vec, slau.x, N);
+
+			return res;
 		}
 
 		/********************************/
