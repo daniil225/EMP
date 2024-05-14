@@ -21,10 +21,10 @@ std::function<double(double, double, double)> div_grad(std::function<double(doub
 ParamDE Test1()
 {
     ParamDE Test;
-    Test.ksi = 0;
-    Test.lambda = 2;
-    Test.omega = 3;
-    Test.sigma = 1;
+    Test.ksi = 10e-10;
+    Test.lambda = 10e2;
+    Test.omega = 10e9;
+    Test.sigma = 10e8;
 
     Test.u_c = [](double x, double y, double z) { return x*x*x+y*y*y+z*z*z; };
     Test.u_s = [](double x, double y, double z) { return  7*x*x*x+y*y*y+4*z*z*z; };
@@ -59,10 +59,10 @@ ParamDE Test1()
 ParamDE Test2()
 {
     ParamDE Test;
-    Test.ksi = 10e-11;
-    Test.lambda = 10e3;
-    Test.omega = 10e5;
-    Test.sigma = 10e4;
+    Test.ksi = 10e-10;
+    Test.lambda = 10e2;
+    Test.omega = 10e9;
+    Test.sigma = 10e8;
 
     Test.u_c = [](double x, double y, double z) { return std::cos(x+y)+ 4*z*z*std::tan(z); };
     Test.u_s = [](double x, double y, double z) { return std::sin(x+y) - 12*z*z*std::log2(5+z); };

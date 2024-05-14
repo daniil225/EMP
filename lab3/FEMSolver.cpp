@@ -426,7 +426,7 @@ double FEMSolver::Calc(int32_t maxiter, double eps, bool showiterslau, bool show
         iterslau.maxiter = maxiter;
         iterslau.eps = eps;
 
-        SLAUSolvers::IterationSolvers::SetSolveMode(iterslau, SLAUSolvers::IterationSolvers::Solvemode::LOS_NOSYMETRIC_LUsq_FACT);
+        SLAUSolvers::IterationSolvers::SetSolveMode(iterslau, SLAUSolvers::IterationSolvers::Solvemode::LOS_NOSYMETRIC_LU_FACT);
         
         auto begin = std::chrono::steady_clock::now();
         SLAUSolvers::IterationSolvers::SolveSLAU(iterslau, showiterslau);

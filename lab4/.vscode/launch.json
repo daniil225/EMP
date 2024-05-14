@@ -9,7 +9,7 @@
       "stopAtEntry": false,
       "externalConsole": false,
       "cwd": "/home/daniil/Desktop/GitHub/EMP/lab4",
-      "program": "/home/daniil/Desktop/GitHub/EMP/lab4/build/Debug/outDebug",
+      "program": "/home/daniil/Desktop/GitHub/EMP/lab4/build/Release/outRelease",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
